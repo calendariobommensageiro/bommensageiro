@@ -1,0 +1,58 @@
+/* Cores e visual do seu site */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #2c3e50;
+}
+
+/* Estilo do Card Comum */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 10px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-left: 5px solid #3498db;
+    text-align: left;
+}
+
+/* Estilo do Card PREMIUM (O que você vai vender) */
+.premium {
+    background: #fffdf0;
+    border: 2px solid #ffd700;
+    border-left: 8px solid #ffd700;
+    box-shadow: 0 6px 12px rgba(255, 215, 0, 0.3);
+}
+
+.premium h3 {
+    color: #b8860b;
+    margin-top: 0;
+}
+
+/* O Botão de Vendas flutuante */
+.btn-venda {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: linear-gradient(135deg, #ff9900, #ffcc00);
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
