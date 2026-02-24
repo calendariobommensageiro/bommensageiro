@@ -100,6 +100,25 @@
             }
         }
     </script>
+<div id="cookie-banner" style="position: fixed; bottom: 0; left: 0; width: 100%; background: #333; color: #fff; padding: 15px; text-align: center; font-size: 14px; z-index: 9999; display: none;">
+    Este site usa cookies para garantir que você tenha a melhor experiência. 
+    <a href="privacidade.html" style="color: #ff5000; text-decoration: underline;">Saiba mais</a>.
+    <button onclick="aceitarCookies()" style="background: #ff5000; color: white; border: none; padding: 5px 15px; margin-left: 15px; cursor: pointer; border-radius: 5px; font-weight: bold;">Aceitar</button>
+</div>
+
+<script>
+    // Função para mostrar o aviso se o usuário ainda não aceitou
+    window.onload = function() {
+        if (!localStorage.getItem('cookiesAceitos')) {
+            document.getElementById('cookie-banner').style.display = 'block';
+        }
+    }
+
+    function aceitarCookies() {
+        localStorage.setItem('cookiesAceitos', 'true');
+        document.getElementById('cookie-banner').style.display = 'none';
+    }
+</script>
 <footer style="text-align: center; padding: 20px; font-size: 14px; border-top: 1px solid #eee; margin-top: 20px;">
         <a href="privacidade.html" style="color: #888; text-decoration: none;">Política de Privacidade</a>
     </footer>
