@@ -2012,42 +2012,28 @@ const datasComemorativas = {
             { t: "Véspera de Ano-Novo", m: "Gratidão pelo que passou e esperança pelo que virá! Feliz virada! 🥂🎆" },
             { t: "Dia de São Silvestre (Festa e Corrida)", m: "Homenagem ao santo e aos atletas que fecham o ano com garra! 🏃‍♂️" }
         ],
-   }; // <--- ESSA CHAVE FECHA TODAS AS DATAS ACIMA
-
-// --- SISTEMA DE EXPLORAÇÃO DO BOM MENSAGEIRO ---
-
+  // --- SISTEMA DE EXPLORAÇÃO ---
 let progresso = JSON.parse(localStorage.getItem('progresso_mensageiro')) || {
     visitas: 0,
     tempoTotal: 0,
     itens: []
 };
 
-function salvarProgresso() {
+// 1. ENTREGA A MOCHILA NA HORA
+if (!progresso.itens.includes('mochila')) {
+    progresso.itens.push('mochila');
     localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
+    alert("🎒 O Bom Mensageiro: Tome esta MOCHILA para sua jornada!");
 }
 
-// Inicia as funções quando a página abre
-window.onload = function() {
-    // 1. Entrega a Mochila
-    if (!progresso.itens.includes('mochila')) {
-        progresso.itens.push('mochila');
-        salvarProgresso();
-        alert("🎒 O Bom Mensageiro: Tome esta MOCHILA para sua jornada!");
-    }
-    
-    // 2. Se você tiver uma função que carrega as datas na tela, 
-    // ela deve ser chamada aqui. Exemplo: if (typeof mostrarData === 'function') mostrarData();
-};
-
-// 3. Cronômetro de Exploração (Conta 1 minuto a cada ciclo)
+// 2. CONTA O TEMPO (Saco de Dormir)
 setInterval(() => {
     progresso.tempoTotal += 1;
-    salvarProgresso();
+    localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
 
-    // Se completar 15 minutos, ganha o Saco de Dormir
     if (progresso.tempoTotal >= 15 && !progresso.itens.includes('saco_dormir')) {
         progresso.itens.push('saco_dormir');
-        salvarProgresso();
-        alert("💤 Você explorou por 15 minutos e ganhou o SACO DE DORMIR!");
+        localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
+        alert("💤 Você ganhou o SACO DE DORMIR!");
     }
 }, 60000);
