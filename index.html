@@ -13,30 +13,15 @@
     <title>Bom Mensageiro - Datas e Homenagens</title>
     <link rel="stylesheet" href="style.css">
     
-      <div class="busca-container">
-    <p><strong>Como quer explorar as datas hoje? 🗺️</strong></p>
-    
-    <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #d2b48c;">
-        <span style="font-size: 0.9em; color: #8b4513; display: block; margin-bottom: 5px;">Por tema:</span>
-        <input type="text" id="campo-busca" placeholder="Procure por: Dia do Amigo..." style="width: 80%; max-width: 300px;">
-        <button class="btn-busca" onclick="buscarPorTema()">Explorar 🧭</button>
-    </div>
-
-    <div>
-        <span style="font-size: 0.9em; color: #8b4513; display: block; margin-bottom: 5px;">Por data específica:</span>
-        <select id="sel-dia"></select>
-        <select id="sel-mes"></select>
-        <button class="btn-busca" onclick="buscarData()">Ver Data 🔍</button>
-    </div>
-</div>
-    
+     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="busca-container">
+<div class="busca-container">
     <p><strong>Qual data vamos desvendar hoje? 🗺️</strong></p>
     
     <div style="margin-bottom: 15px;">
+        <span style="font-size: 0.9em; color: #8b4513;">Por data específica:</span><br>
         <select id="sel-dia"></select>
         <select id="sel-mes"></select>
         <button class="btn-busca" onclick="buscarData()">Ver Data 🔍</button>
@@ -45,8 +30,10 @@
     <hr style="border: 0; border-top: 1px solid #d2b48c; margin: 15px 0;">
 
     <div>
-        <input type="text" id="campo-busca" placeholder="Procure por: Dia do Amigo..." style="width: 80%; max-width: 300px; padding: 10px; border-radius: 20px; border: 2px solid #8b4513; background: #fffdf0;">
-        <button class="btn-busca" onclick="buscarPorTema()" style="margin-left: 5px;">Explorar 🧭</button>
+        <span style="font-size: 0.9em; color: #8b4513;">Por tema (digite abaixo):</span><br>
+        <input type="text" id="campo-busca" placeholder="Procure por..." style="width: 80%; max-width: 300px; padding: 10px; border-radius: 20px; border: 2px solid #8b4513; background: #fffdf0; margin-top: 10px;">
+        <br>
+        <button class="btn-busca" onclick="buscarPorTema()">Explorar 🧭</button>
     </div>
 </div>
 
