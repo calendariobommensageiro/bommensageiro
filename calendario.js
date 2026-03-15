@@ -2013,21 +2013,50 @@ const datasComemorativas = {
             { t: "Dia de São Silvestre (Festa e Corrida)", m: "Homenagem ao santo e aos atletas que fecham o ano com garra! 🏃‍♂️" }
          ], }; // 
 
- // --- SISTEMA DE EXPLORAÇÃO ---
+// --- SISTEMA DE EXPLORAÇÃO ---
 let progresso = JSON.parse(localStorage.getItem('progresso_mensageiro')) || {
     visitas: 0,
     tempoTotal: 0,
     itens: []
 };
 
-// 1. ENTREGA A MOCHILA NA HORA
+// 1. GERENCIAR VISITAS (SÓ CONTA UMA VEZ POR SESSÃO)
+if (!sessionStorage.getItem('sessao_ativa')) {
+    progresso.visitas = (progresso.visitas || 0) + 1;
+    sessionStorage.setItem('sessao_ativa', 'true');
+    localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
+}
+
+// 2. ENTREGA A MOCHILA NA HORA (1ª VISITA)
 if (!progresso.itens.includes('mochila')) {
     progresso.itens.push('mochila');
     localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
     alert("🎒 O Bom Mensageiro: Tome esta MOCHILA para sua jornada!");
 }
 
-// 2. CONTA O TEMPO (Saco de Dormir)
+// 3. TABELA DE CONQUISTAS POR VISITAS
+const tabelaConquistas = [
+    { visitas: 3, id: 'protetor', nome: 'PROTETOR SOLAR', emoji: '🧴' },
+    { visitas: 5, id: 'cantil', nome: 'CANTIL', emoji: '💧' },
+    { visitas: 8, id: 'pederneira', nome: 'PEDERNEIRA', emoji: '🔥' },
+    { visitas: 10, id: 'lanterna', nome: 'LANTERNA', emoji: '🔦' },
+    { visitas: 15, id: 'bussola', nome: 'BÚSSOLA', emoji: '🧭' },
+    { visitas: 20, id: 'botas', nome: 'BOTAS DE TRILHA', emoji: '🥾' },
+    { visitas: 25, id: 'capa_chuva', nome: 'CAPA DE CHUVA', emoji: '🧥' },
+    { visitas: 30, id: 'luneta', nome: 'LUNETA', emoji: '🔭' },
+    { visitas: 40, id: 'corda', nome: 'CORDA', emoji: '🪢' },
+    { visitas: 50, id: 'canivete', nome: 'CANIVETE SUÍÇO', emoji: '🔪' }
+];
+
+tabelaConquistas.forEach(conquista => {
+    if (progresso.visitas >= conquista.visitas && !progresso.itens.includes(conquista.id)) {
+        progresso.itens.push(conquista.id);
+        localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
+        alert(`${conquista.emoji} PARABÉNS! Você ganhou: ${conquista.nome}!`);
+    }
+});
+
+// 4. CONTA O TEMPO (Saco de Dormir - 15 minutos)
 setInterval(() => {
     progresso.tempoTotal += 1;
     localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
@@ -2036,27 +2065,30 @@ setInterval(() => {
         progresso.itens.push('saco_dormir');
         localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
         alert("💤 Você ganhou o SACO DE DORMIR!");
+        atualizarSite();
     }
 }, 60000);
 
 // Função para "acender" os itens no site
 function atualizarSite() {
-    // Busca o progresso salvo
     let progressoAtual = JSON.parse(localStorage.getItem('progresso_mensageiro')) || { itens: [] };
-
-    if (progressoAtual.itens.includes('mochila')) {
-        const icone = document.getElementById('icone-mochila');
-        if (icone) icone.style.opacity = "1"; 
-    }
     
-    if (progressoAtual.itens.includes('saco_dormir')) {
-        const icone = document.getElementById('icone-saco');
-        if (icone) icone.style.opacity = "1";
-    }
+    // Lista de todos os IDs possíveis para evitar repetição de código
+    const todosOsItens = ['mochila', 'saco_dormir', 'protetor', 'cantil', 'pederneira', 'lanterna', 'bussola', 'botas', 'capa_chuva', 'luneta', 'corda', 'canivete'];
+
+    todosOsItens.forEach(item => {
+        if (progressoAtual.itens.includes(item)) {
+            // Ajuste aqui: o ID no HTML deve ser 'icone-mochila', 'icone-cantil', etc.
+            // Para o saco de dormir, usamos 'icone-saco' para manter seu padrão
+            let idFinal = (item === 'saco_dormir') ? 'icone-saco' : 'icone-' + item.id;
+            const icone = document.getElementById(item === 'saco_dormir' ? 'icone-saco' : 'icone-' + item);
+            if (icone) icone.style.opacity = "1";
+        }
+    });
 }
 
-// Executa a função assim que o script carregar
 atualizarSite();
+
 /* --- MOTOR DE SUGESTÕES DINÂMICAS --- */
 const inputBusca = document.getElementById('campo-busca');
 const frasesSugestao = [
@@ -2068,15 +2100,12 @@ const frasesSugestao = [
 ];
 
 let indiceFrase = 0;
-
 function trocarSugestao() {
     if (inputBusca) {
         inputBusca.placeholder = frasesSugestao[indiceFrase];
         indiceFrase = (indiceFrase + 1) % frasesSugestao.length;
     }
 }
-
-// Troca a frase a cada 3 segundos
 setInterval(trocarSugestao, 3000);
 
 function buscarPorTema() {
@@ -2099,11 +2128,8 @@ function buscarPorTema() {
         eventos.forEach(evento => {
             if (evento.t.toLowerCase().includes(termo) || evento.m.toLowerCase().includes(termo)) {
                 encontrou = true;
-                
                 const card = document.createElement('div');
                 card.className = 'card';
-                
-                // Texto preparado para o WhatsApp
                 const textoZap = encodeURIComponent('*' + evento.t + '*\n' + evento.m);
 
                 card.innerHTML = `
