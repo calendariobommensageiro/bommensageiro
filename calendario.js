@@ -2093,7 +2093,6 @@ function buscarPorTema() {
 
     for (let dataKey in datasComemorativas) {
         const eventos = datasComemorativas[dataKey];
-        // Extrai o dia e o mês da chave (ex: "6-13" vira mês 6, dia 13)
         const [mesIdx, dia] = dataKey.split('-');
         const nomeMes = mesesNomes[parseInt(mesIdx)];
 
@@ -2104,14 +2103,16 @@ function buscarPorTema() {
                 const card = document.createElement('div');
                 card.className = 'card';
                 
-                // Aqui montamos o card IGUAL ao que você já tinha, com data e botões
+                // Texto preparado para o WhatsApp
+                const textoZap = encodeURIComponent('*' + evento.t + '*\n' + evento.m);
+
                 card.innerHTML = `
-                    <div class="data-sel">${dia} de ${nomeMes}</div>
-                    <h3>${evento.t}</h3>
-                    <p>${evento.m}</p>
-                    <div class="acoes">
-                        <button class="btn-whats" onclick="compartilharWhatsApp('${evento.t}', '${evento.m}')">WhatsApp 🟢</button>
-                        <a href="SUO_LINK_DO_KWAI_AQUI" target="_blank" class="btn-kwai">Kwai</a>
+                    <div style="font-size: 0.8em; color: #8b4513; font-weight: bold; margin-bottom: 5px;">${dia} de ${nomeMes}</div>
+                    <h3 style="margin: 5px 0;">${evento.t}</h3>
+                    <p style="font-size: 0.95em;">${evento.m}</p>
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button onclick="window.open('https://api.whatsapp.com/send?text=${textoZap}', '_blank')" style="background-color: #25d366; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">WhatsApp 🟢</button>
+                        <a href="https://www.kwai.com/@bommensageiro" target="_blank" style="background-color: #ff5000; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; text-decoration: none; font-size: 13px; display: flex; align-items: center;">Kwai</a>
                     </div>
                 `;
                 container.appendChild(card);
