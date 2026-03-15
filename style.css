@@ -113,3 +113,17 @@ select {
     transform: scale(1.05);
     background: linear-gradient(135deg, #5d2e0a, #8b4513) !important;
 }
+/* Estilo para a barra de digitar aparecer abaixo dos seletores */
+#campo-busca {
+    display: block; /* Faz ele ficar em uma linha nova */
+    width: 80%;
+    max-width: 300px;
+    margin: 15px auto 0 auto; /* Centraliza e dá distância do topo */
+    padding: 10px;
+    border: 2px solid #8b4513;
+    border-radius: 20px;
+    background-color: #fffdf0;
+    font-family: 'Georgia', serif;
+    color: #4b3621;
+    outline: none;
+}
