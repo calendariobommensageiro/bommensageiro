@@ -2047,3 +2047,24 @@ function checkPrimeiraVisita() {
 
 // Executa assim que o site abre
 checkPrimeiraVisita();  
+
+// --- CRONÔMETRO DE EXPLORAÇÃO ---
+
+setInterval(() => {
+    progresso.tempoTotal += 1; // Soma 1 minuto a cada 60 segundos
+    salvarProgresso();
+
+    // Verifica se ganhou o Saco de Dormir
+    if (progresso.tempoTotal >= 15 && !progresso.itens.includes('saco_dormir')) {
+        progresso.itens.push('saco_dormir');
+        salvarProgresso();
+        alert("💤 O Bom Mensageiro diz: Vi que você se acomodou! Ganhou um SACO DE DORMIR para descansar na trilha!");
+    }
+
+    // Verifica se ganhou a Barraca
+    if (progresso.tempoTotal >= 30 && !progresso.itens.includes('barraca')) {
+        progresso.itens.push('barraca');
+        salvarProgresso();
+        alert("⛺ O Bom Mensageiro diz: Você já é de casa! Ganhou uma BARRACA DE CAMPING para montar sua base oficial!");
+    }
+}, 60000); // 60000 milissegundos = 1 minuto
