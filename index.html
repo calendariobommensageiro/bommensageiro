@@ -13,13 +13,22 @@
     <title>Bom Mensageiro - Datas e Homenagens</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .busca-container { background: #fff5f0; padding: 25px; border-radius: 15px; margin-bottom: 25px; border: 2px dashed #ff5000; text-align: center; }
-        select { padding: 12px; border-radius: 8px; border: 1px solid #ff5000; margin: 5px; font-size: 16px; background: white; }
-        .btn-busca { background: #ff5000; color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
-        .btn-busca:hover { background: #e64500; }
-        .conteudo-extra { margin-top: 40px; text-align: left; line-height: 1.8; color: #444; border-top: 2px solid #eee; padding: 20px; background: #fafafa; border-radius: 10px; }
-        .conteudo-extra h3 { color: #ff5000; margin-top: 20px; }
-        .btn-kwai { position: fixed; bottom: 80px; right: 20px; background: linear-gradient(135deg, #ff5000, #ff8c00); color: white !important; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; display: flex; align-items: center; }
+      <div class="busca-container">
+    <p><strong>Como quer explorar as datas hoje? 🗺️</strong></p>
+    
+    <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #d2b48c;">
+        <span style="font-size: 0.9em; color: #8b4513; display: block; margin-bottom: 5px;">Por tema:</span>
+        <input type="text" id="campo-busca" placeholder="Procure por: Dia do Amigo..." style="width: 80%; max-width: 300px;">
+        <button class="btn-busca" onclick="buscarPorTema()">Explorar 🧭</button>
+    </div>
+
+    <div>
+        <span style="font-size: 0.9em; color: #8b4513; display: block; margin-bottom: 5px;">Por data específica:</span>
+        <select id="sel-dia"></select>
+        <select id="sel-mes"></select>
+        <button class="btn-busca" onclick="buscarData()">Ver Data 🔍</button>
+    </div>
+</div>
     </style>
 </head>
 <body>
