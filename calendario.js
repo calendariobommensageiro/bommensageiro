@@ -2011,7 +2011,8 @@ const datasComemorativas = {
         "11-31": [
             { t: "Véspera de Ano-Novo", m: "Gratidão pelo que passou e esperança pelo que virá! Feliz virada! 🥂🎆" },
             { t: "Dia de São Silvestre (Festa e Corrida)", m: "Homenagem ao santo e aos atletas que fecham o ano com garra! 🏃‍♂️" }
-        ],
+         ],
+    
   // --- SISTEMA DE EXPLORAÇÃO ---
 let progresso = JSON.parse(localStorage.getItem('progresso_mensageiro')) || {
     visitas: 0,
