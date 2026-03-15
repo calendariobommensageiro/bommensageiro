@@ -1,4 +1,4 @@
-/* Cores e visual do seu site */
+/* --- CONFIGURAÇÃO GERAL --- */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7f6;
@@ -14,38 +14,38 @@ h1 {
     color: #2c3e50;
 }
 
-/* Estilo do Card (Agora com cara de Papel Antigo/Pergaminho) */
+/* --- ESTILO PAPEL ANTIGO (CARDS) --- */
 .card {
-    background-color: #f4e4bc; /* Cor de papel envelhecido */
+    background-color: #f4e4bc !important; 
     background-image: radial-gradient(#efe1ba 20%, transparent 20%), 
-                      radial-gradient(#efe1ba 20%, transparent 20%);
-    background-position: 0 0, 10px 10px;
-    background-size: 20px 20px;
-    border: 1px solid #d2b48c; /* Borda marrom suave */
-    border-radius: 4px; /* Retangular com cantos levemente suavizados */
+                      radial-gradient(#efe1ba 20%, transparent 20%) !important;
+    background-position: 0 0, 10px 10px !important;
+    background-size: 20px 20px !important;
+    border: 1px solid #d2b48c !important;
+    border-radius: 4px; 
     padding: 20px;
     margin: 10px;
     width: 90%;
     max-width: 450px;
-    box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.15) !important;
     text-align: left;
-    font-family: 'Georgia', serif; /* Letra de livro antigo */
-    color: #4b3621; /* Cor de tinta marrom escura */
+    font-family: 'Georgia', serif;
+    color: #4b3621 !important;
 }
 
-/* Ajuste para o Card PREMIUM (Ainda mais especial) */
+/* --- ESTILO PREMIUM --- */
 .premium {
-    background-color: #fcf5e5;
-    border: 2px solid #b8860b; /* Borda dourada mais rústica */
-    box-shadow: 0 6px 12px rgba(184, 134, 11, 0.2);
+    background-color: #fcf5e5 !important;
+    border: 2px solid #b8860b !important;
+    box-shadow: 0 6px 12px rgba(184, 134, 11, 0.2) !important;
 }
 
 .premium h3 {
-    color: #8b4513; /* Marrom avermelhado para o título */
+    color: #8b4513 !important;
     margin-top: 0;
 }
 
-/* O Botão de Vendas flutuante */
+/* --- BOTÃO DE VENDA --- */
 .btn-venda {
     position: fixed;
     bottom: 25px;
