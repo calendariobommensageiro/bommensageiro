@@ -14,29 +14,34 @@ h1 {
     color: #2c3e50;
 }
 
-/* Estilo do Card Comum */
+/* Estilo do Card (Agora com cara de Papel Antigo/Pergaminho) */
 .card {
-    background: white;
-    border-radius: 12px;
+    background-color: #f4e4bc; /* Cor de papel envelhecido */
+    background-image: radial-gradient(#efe1ba 20%, transparent 20%), 
+                      radial-gradient(#efe1ba 20%, transparent 20%);
+    background-position: 0 0, 10px 10px;
+    background-size: 20px 20px;
+    border: 1px solid #d2b48c; /* Borda marrom suave */
+    border-radius: 4px; /* Retangular com cantos levemente suavizados */
     padding: 20px;
     margin: 10px;
     width: 90%;
     max-width: 450px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    border-left: 5px solid #3498db;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
     text-align: left;
+    font-family: 'Georgia', serif; /* Letra de livro antigo */
+    color: #4b3621; /* Cor de tinta marrom escura */
 }
 
-/* Estilo do Card PREMIUM (O que você vai vender) */
+/* Ajuste para o Card PREMIUM (Ainda mais especial) */
 .premium {
-    background: #fffdf0;
-    border: 2px solid #ffd700;
-    border-left: 8px solid #ffd700;
-    box-shadow: 0 6px 12px rgba(255, 215, 0, 0.3);
+    background-color: #fcf5e5;
+    border: 2px solid #b8860b; /* Borda dourada mais rústica */
+    box-shadow: 0 6px 12px rgba(184, 134, 11, 0.2);
 }
 
 .premium h3 {
-    color: #b8860b;
+    color: #8b4513; /* Marrom avermelhado para o título */
     margin-top: 0;
 }
 
