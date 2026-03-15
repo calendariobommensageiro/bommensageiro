@@ -2057,3 +2057,24 @@ function atualizarSite() {
 
 // Executa a função assim que o script carregar
 atualizarSite();
+/* --- MOTOR DE SUGESTÕES DINÂMICAS --- */
+const inputBusca = document.getElementById('campo-busca');
+const frasesSugestao = [
+    "Procure por: Dia do Corno...",
+    "Procure por: Dia do Churrasco...",
+    "Procure por: Dia do Homem...",
+    "Procure por: Dia do Amigo...",
+    "Procure por: Dia do Rock..."
+];
+
+let indiceFrase = 0;
+
+function trocarSugestao() {
+    if (inputBusca) {
+        inputBusca.placeholder = frasesSugestao[indiceFrase];
+        indiceFrase = (indiceFrase + 1) % frasesSugestao.length;
+    }
+}
+
+// Troca a frase a cada 3 segundos
+setInterval(trocarSugestao, 3000);
