@@ -2012,46 +2012,10 @@ const datasComemorativas = {
             { t: "Véspera de Ano-Novo", m: "Gratidão pelo que passou e esperança pelo que virá! Feliz virada! 🥂🎆" },
             { t: "Dia de São Silvestre (Festa e Corrida)", m: "Homenagem ao santo e aos atletas que fecham o ano com garra! 🏃‍♂️" }
         ],
-    }; 
-],
-        "11-31": [
-            { t: "Véspera de Ano-Novo", m: "Gratidão pelo que passou e esperança pelo que virá! Feliz virada! 🥂🎆" },
-            { t: "Dia de São Silvestre (Festa e Corrida)", m: "Homenagem ao santo e aos atletas que fecham o ano com garra! 🏃‍♂️" }
-        ],
-    }; 
+   }; // <--- ESSA CHAVE FECHA TODAS AS DATAS ACIMA
 
- // --- SISTEMA DE MEMÓRIA DO BOM MENSAGEIRO ---
+// --- SISTEMA DE EXPLORAÇÃO DO BOM MENSAGEIRO ---
 
-// 1. Carrega o que o usuário já conquistou ou cria um novo se for a primeira vez
-let progresso = JSON.parse(localStorage.getItem('progresso_mensageiro')) || {
-    visitas: 0,
-    tempoTotal: 0, // em minutos
-    itens: [],
-    ultimaVisita: ""
-};
-
-// 2. Função para SALVAR o progresso (chama isso sempre que ele ganhar algo)
-function salvarProgresso() {
-    localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
-}
-
-// 3. Lógica da Primeira Visita (Ganhar a Mochila)
-function checkPrimeiraVisita() {
-    if (!progresso.itens.includes('mochila')) {
-        progresso.itens.push('mochila');
-        progresso.visitas = 1;
-        salvarProgresso();
-        alert("🎒 O Bom Mensageiro diz: Tome esta MOCHILA! Ela é para sua jornada e para os itens que vai coletar!");
-    }
-}
-
-// Executa assim que o site abre
-checkPrimeiraVisita();  
-
-// --- FECHAMENTO DAS DATAS (ESSENCIAL PARA O SITE VOLTAR A FUNCIONAR) ---
-}; 
-
-// --- NOVO SISTEMA DE EXPLORAÇÃO ---
 let progresso = JSON.parse(localStorage.getItem('progresso_mensageiro')) || {
     visitas: 0,
     tempoTotal: 0,
@@ -2062,21 +2026,28 @@ function salvarProgresso() {
     localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
 }
 
-// Missão 1: A Mochila
-if (!progresso.itens.includes('mochila')) {
-    progresso.itens.push('mochila');
-    salvarProgresso();
-    alert("🎒 O Bom Mensageiro: Tome esta MOCHILA para sua jornada!");
-}
+// Inicia as funções quando a página abre
+window.onload = function() {
+    // 1. Entrega a Mochila
+    if (!progresso.itens.includes('mochila')) {
+        progresso.itens.push('mochila');
+        salvarProgresso();
+        alert("🎒 O Bom Mensageiro: Tome esta MOCHILA para sua jornada!");
+    }
+    
+    // 2. Se você tiver uma função que carrega as datas na tela, 
+    // ela deve ser chamada aqui. Exemplo: if (typeof mostrarData === 'function') mostrarData();
+};
 
-// Missão 2: Tempo de Tela (AdSense)
+// 3. Cronômetro de Exploração (Conta 1 minuto a cada ciclo)
 setInterval(() => {
     progresso.tempoTotal += 1;
     salvarProgresso();
 
+    // Se completar 15 minutos, ganha o Saco de Dormir
     if (progresso.tempoTotal >= 15 && !progresso.itens.includes('saco_dormir')) {
         progresso.itens.push('saco_dormir');
         salvarProgresso();
-        alert("💤 Você ganhou o SACO DE DORMIR!");
+        alert("💤 Você explorou por 15 minutos e ganhou o SACO DE DORMIR!");
     }
 }, 60000);
