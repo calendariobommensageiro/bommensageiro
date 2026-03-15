@@ -2078,3 +2078,28 @@ function trocarSugestao() {
 
 // Troca a frase a cada 3 segundos
 setInterval(trocarSugestao, 3000);
+
+/* --- FUNÇÃO PARA FILTRAR OS CARDS PELO TEMA --- */
+function buscarPorTema() {
+    // 1. Pega o que você digitou e transforma em letras minúsculas
+    const termo = document.getElementById('campo-busca').value.toLowerCase();
+    
+    // 2. Pega todos os cards de datas que estão na página
+    const cards = document.querySelectorAll('.card');
+
+    if (termo === "") {
+        alert("Por favor, digite algo para explorar!");
+        return;
+    }
+
+    // 3. O "Segredo": Ele olha card por card para ver se o texto combina
+    cards.forEach(card => {
+        const textoDoCard = card.innerText.toLowerCase();
+        
+        if (textoDoCard.includes(termo)) {
+            card.style.display = "block"; // Mostra se combinar
+        } else {
+            card.style.display = "none";  // Esconde se não tiver nada a ver
+        }
+    });
+}
