@@ -2013,5 +2013,37 @@ const datasComemorativas = {
             { t: "Dia de São Silvestre (Festa e Corrida)", m: "Homenagem ao santo e aos atletas que fecham o ano com garra! 🏃‍♂️" }
         ],
     }; 
+],
+        "11-31": [
+            { t: "Véspera de Ano-Novo", m: "Gratidão pelo que passou e esperança pelo que virá! Feliz virada! 🥂🎆" },
+            { t: "Dia de São Silvestre (Festa e Corrida)", m: "Homenagem ao santo e aos atletas que fecham o ano com garra! 🏃‍♂️" }
+        ],
+    }; 
 
-   
+ // --- SISTEMA DE MEMÓRIA DO BOM MENSAGEIRO ---
+
+// 1. Carrega o que o usuário já conquistou ou cria um novo se for a primeira vez
+let progresso = JSON.parse(localStorage.getItem('progresso_mensageiro')) || {
+    visitas: 0,
+    tempoTotal: 0, // em minutos
+    itens: [],
+    ultimaVisita: ""
+};
+
+// 2. Função para SALVAR o progresso (chama isso sempre que ele ganhar algo)
+function salvarProgresso() {
+    localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
+}
+
+// 3. Lógica da Primeira Visita (Ganhar a Mochila)
+function checkPrimeiraVisita() {
+    if (!progresso.itens.includes('mochila')) {
+        progresso.itens.push('mochila');
+        progresso.visitas = 1;
+        salvarProgresso();
+        alert("🎒 O Bom Mensageiro diz: Tome esta MOCHILA! Ela é para sua jornada e para os itens que vai coletar!");
+    }
+}
+
+// Executa assim que o site abre
+checkPrimeiraVisita();  
