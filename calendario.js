@@ -2038,3 +2038,22 @@ setInterval(() => {
         alert("💤 Você ganhou o SACO DE DORMIR!");
     }
 }, 60000);
+
+// Função para "acender" os itens no site
+function atualizarSite() {
+    // Busca o progresso salvo
+    let progressoAtual = JSON.parse(localStorage.getItem('progresso_mensageiro')) || { itens: [] };
+
+    if (progressoAtual.itens.includes('mochila')) {
+        const icone = document.getElementById('icone-mochila');
+        if (icone) icone.style.opacity = "1"; 
+    }
+    
+    if (progressoAtual.itens.includes('saco_dormir')) {
+        const icone = document.getElementById('icone-saco');
+        if (icone) icone.style.opacity = "1";
+    }
+}
+
+// Executa a função assim que o script carregar
+atualizarSite();
