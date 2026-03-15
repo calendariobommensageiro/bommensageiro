@@ -2079,40 +2079,47 @@ function trocarSugestao() {
 // Troca a frase a cada 3 segundos
 setInterval(trocarSugestao, 3000);
 
-/* --- NOVA FUNÇÃO DE BUSCA POR TEMA (MAIS INTELIGENTE) --- */
 function buscarPorTema() {
     const termo = document.getElementById('campo-busca').value.toLowerCase();
-    const container = document.getElementById('resultado-busca'); // Onde os cards aparecem
+    const container = document.getElementById('resultado-busca');
     
     if (termo === "") {
         alert("Por favor, digite um tema!");
         return;
     }
 
-    // Limpa a tela para mostrar os novos resultados
     container.innerHTML = "";
     let encontrou = false;
 
-    // Procura em todas as datas que você tem cadastradas
     for (let dataKey in datasComemorativas) {
         const eventos = datasComemorativas[dataKey];
-        
+        // Extrai o dia e o mês da chave (ex: "6-13" vira mês 6, dia 13)
+        const [mesIdx, dia] = dataKey.split('-');
+        const nomeMes = mesesNomes[parseInt(mesIdx)];
+
         eventos.forEach(evento => {
-            // Verifica se o título (t) ou a mensagem (m) tem o que você digitou
             if (evento.t.toLowerCase().includes(termo) || evento.m.toLowerCase().includes(termo)) {
                 encontrou = true;
                 
-                // Cria o card novo na hora
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `<h3>${evento.t}</h3><p>${evento.m}</p>`;
+                
+                // Aqui montamos o card IGUAL ao que você já tinha, com data e botões
+                card.innerHTML = `
+                    <div class="data-sel">${dia} de ${nomeMes}</div>
+                    <h3>${evento.t}</h3>
+                    <p>${evento.m}</p>
+                    <div class="acoes">
+                        <button class="btn-whats" onclick="compartilharWhatsApp('${evento.t}', '${evento.m}')">WhatsApp 🟢</button>
+                        <a href="SUO_LINK_DO_KWAI_AQUI" target="_blank" class="btn-kwai">Kwai</a>
+                    </div>
+                `;
                 container.appendChild(card);
             }
         });
     }
 
-    // Se não achar nada, avisa o usuário
     if (!encontrou) {
-        container.innerHTML = "<p style='color: #8b4513; text-align: center;'>Nenhuma data encontrada com esse tema. 🗺️</p>";
+        container.innerHTML = "<p style='color: #8b4513; text-align: center;'>Nenhuma data encontrada. 🗺️</p>";
     }
 }
