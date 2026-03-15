@@ -71,3 +71,45 @@ h1 {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+/* --- ESTILO DA ÁREA DE EXPLORAÇÃO --- */
+.busca-container {
+    background-color: #fcf5e5 !important; /* Cor de papel clara */
+    border: 2px ridge #8b4513 !important; /* Borda que lembra moldura de madeira */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Estilo dos Seletores (Dia e Mês) */
+select {
+    padding: 8px;
+    border: 1px solid #d2b48c;
+    border-radius: 5px;
+    background-color: #fffdf0;
+    font-family: 'Georgia', serif;
+    color: #4b3621;
+    cursor: pointer;
+}
+
+/* O Botão Explorar */
+.btn-busca {
+    background: linear-gradient(135deg, #8b4513, #5d2e0a) !important; /* Marrom escuro rústico */
+    color: #fcf5e5 !important;
+    border: none !important;
+    padding: 12px 30px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    font-family: 'Georgia', serif !important;
+    border-radius: 50px !important;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3) !important;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn-busca:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #5d2e0a, #8b4513) !important;
+}
