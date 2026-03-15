@@ -33,23 +33,22 @@
 </head>
 <body>
 
-   <div class="busca-container">
+  <div class="busca-container">
     <p><strong>Qual data vamos desvendar hoje? 🗺️</strong></p>
+    
     <div style="margin-bottom: 15px;">
-        <label for="sel-dia" style="font-family: 'Georgia', serif;">Dia:</label>
         <select id="sel-dia"></select>
-        
-        <label for="sel-mes" style="font-family: 'Georgia', serif; margin-left: 10px;">Mês:</label>
         <select id="sel-mes"></select>
+        <button class="btn-busca" onclick="buscarData()">Ver Data 🔍</button>
     </div>
-    <button class="btn-busca" onclick="buscarData()">EXPLORAR 🔍</button>
+
+    <hr style="border: 0; border-top: 1px solid #d2b48c; margin: 15px 0;">
+
+    <div>
+        <input type="text" id="campo-busca" placeholder="Procure por: Dia do Amigo..." style="width: 80%; max-width: 300px; padding: 10px; border-radius: 20px; border: 2px solid #8b4513; background: #fffdf0;">
+        <button class="btn-busca" onclick="buscarPorTema()" style="margin-left: 5px;">Explorar 🧭</button>
+    </div>
 </div>
-<div id="container-aventura" style="text-align: center; padding: 20px;">
-    <div id="bussola-girando" style="font-size: 60px; margin-bottom: -10px; display: inline-block;">🧭</div>
-    <div id="espaco-mascote">
-        <img src="mascotesite.png.png" id="mascote-img" style="width: 150px; height: auto;" alt="O Bom Mensageiro">
-        <p id="fala-mascote">Olá! Eu sou o Bom Mensageiro. Vamos explorar?</p>
-    </div>
 
     <div id="inventario" style="font-size: 24px; background: #f0f0f0; border-radius: 10px; display: inline-block; padding: 10px;">
         <span id="icone-mochila" title="Mochila" style="opacity: 0.2;">🎒</span>
