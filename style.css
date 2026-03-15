@@ -61,3 +61,13 @@ h1 {
     align-items: center;
     gap: 10px;
 }
+/* Faz a bússola girar devagar como se estivesse buscando o norte */
+#bussola-girando {
+    display: inline-block; /* Importante para ela conseguir girar no próprio eixo */
+    animation: girarSuave 8s linear infinite;
+}
+
+@keyframes girarSuave {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
