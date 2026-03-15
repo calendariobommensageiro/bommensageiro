@@ -2079,27 +2079,40 @@ function trocarSugestao() {
 // Troca a frase a cada 3 segundos
 setInterval(trocarSugestao, 3000);
 
-/* --- FUNÇÃO PARA FILTRAR OS CARDS PELO TEMA --- */
+/* --- NOVA FUNÇÃO DE BUSCA POR TEMA (MAIS INTELIGENTE) --- */
 function buscarPorTema() {
-    // 1. Pega o que você digitou e transforma em letras minúsculas
     const termo = document.getElementById('campo-busca').value.toLowerCase();
+    const container = document.getElementById('resultado-busca'); // Onde os cards aparecem
     
-    // 2. Pega todos os cards de datas que estão na página
-    const cards = document.querySelectorAll('.card');
-
     if (termo === "") {
-        alert("Por favor, digite algo para explorar!");
+        alert("Por favor, digite um tema!");
         return;
     }
 
-    // 3. O "Segredo": Ele olha card por card para ver se o texto combina
-    cards.forEach(card => {
-        const textoDoCard = card.innerText.toLowerCase();
+    // Limpa a tela para mostrar os novos resultados
+    container.innerHTML = "";
+    let encontrou = false;
+
+    // Procura em todas as datas que você tem cadastradas
+    for (let dataKey in datasComemorativas) {
+        const eventos = datasComemorativas[dataKey];
         
-        if (textoDoCard.includes(termo)) {
-            card.style.display = "block"; // Mostra se combinar
-        } else {
-            card.style.display = "none";  // Esconde se não tiver nada a ver
-        }
-    });
+        eventos.forEach(evento => {
+            // Verifica se o título (t) ou a mensagem (m) tem o que você digitou
+            if (evento.t.toLowerCase().includes(termo) || evento.m.toLowerCase().includes(termo)) {
+                encontrou = true;
+                
+                // Cria o card novo na hora
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<h3>${evento.t}</h3><p>${evento.m}</p>`;
+                container.appendChild(card);
+            }
+        });
+    }
+
+    // Se não achar nada, avisa o usuário
+    if (!encontrou) {
+        container.innerHTML = "<p style='color: #8b4513; text-align: center;'>Nenhuma data encontrada com esse tema. 🗺️</p>";
+    }
 }
