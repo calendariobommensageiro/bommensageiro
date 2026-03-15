@@ -2048,23 +2048,35 @@ function checkPrimeiraVisita() {
 // Executa assim que o site abre
 checkPrimeiraVisita();  
 
-// --- CRONÔMETRO DE EXPLORAÇÃO ---
+// --- FECHAMENTO DAS DATAS (ESSENCIAL PARA O SITE VOLTAR A FUNCIONAR) ---
+}; 
 
+// --- NOVO SISTEMA DE EXPLORAÇÃO ---
+let progresso = JSON.parse(localStorage.getItem('progresso_mensageiro')) || {
+    visitas: 0,
+    tempoTotal: 0,
+    itens: []
+};
+
+function salvarProgresso() {
+    localStorage.setItem('progresso_mensageiro', JSON.stringify(progresso));
+}
+
+// Missão 1: A Mochila
+if (!progresso.itens.includes('mochila')) {
+    progresso.itens.push('mochila');
+    salvarProgresso();
+    alert("🎒 O Bom Mensageiro: Tome esta MOCHILA para sua jornada!");
+}
+
+// Missão 2: Tempo de Tela (AdSense)
 setInterval(() => {
-    progresso.tempoTotal += 1; // Soma 1 minuto a cada 60 segundos
+    progresso.tempoTotal += 1;
     salvarProgresso();
 
-    // Verifica se ganhou o Saco de Dormir
     if (progresso.tempoTotal >= 15 && !progresso.itens.includes('saco_dormir')) {
         progresso.itens.push('saco_dormir');
         salvarProgresso();
-        alert("💤 O Bom Mensageiro diz: Vi que você se acomodou! Ganhou um SACO DE DORMIR para descansar na trilha!");
+        alert("💤 Você ganhou o SACO DE DORMIR!");
     }
-
-    // Verifica se ganhou a Barraca
-    if (progresso.tempoTotal >= 30 && !progresso.itens.includes('barraca')) {
-        progresso.itens.push('barraca');
-        salvarProgresso();
-        alert("⛺ O Bom Mensageiro diz: Você já é de casa! Ganhou uma BARRACA DE CAMPING para montar sua base oficial!");
-    }
-}, 60000); // 60000 milissegundos = 1 minuto
+}, 60000);
