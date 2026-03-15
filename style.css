@@ -127,3 +127,25 @@ select {
     color: #4b3621;
     outline: none;
 }
+/* ESTILO DO BOTÃO FLUTUANTE */
+.btn-kwai-flutuante {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff5000;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 30px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+    z-index: 9999; /* Garante que ele fique na frente de tudo */
+}
+
+.btn-kwai-flutuante img {
+    width: 24px;
+    height: 24px;
+}
