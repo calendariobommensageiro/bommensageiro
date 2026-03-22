@@ -475,6 +475,7 @@ const datasComemorativas = {
         ],
 "3-25": [
             { t: "Dia do Contabilista", m: "Homenagem aos profissionais da precisão e das contas! 📊" },
+            { t: "Dia do Corno", m: "A última pessoa a saber, mas a primeira a ganhar figurinha no Zap! 😂🤘" },       
             { t: "Dia Mundial da Luta contra a Malária", m: "Conscientização e prevenção global. 🏥" },
             { t: "Dia de São Marcos", m: "Padroeiro dos vidraceiros e notários. 🙏" },
             { t: "Dia da DNA", m: "Celebrando a descoberta da estrutura da vida! 🧬" },
