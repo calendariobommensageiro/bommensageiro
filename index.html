@@ -37,149 +37,132 @@
         <input type="text" id="campo-busca" placeholder="Procure por..." style="width: 80%; max-width: 300px; padding: 10px; border-radius: 20px; border: 2px solid #8b4513; background: #fffdf0; margin-top: 10px;">
         <br>
         <button class="btn-busca" onclick="buscarPorTema()">Explorar 🧭</button>
-  <div id="resultado-busca" style="margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;"></div>
-
-<div id="inventario-container" style="text-align: center; margin-top: 20px;">
-    <p style="font-size: 0.8em; color: #8b4513; margin-bottom: 5px;"><strong>Equipamentos de Expedição</strong></p>
-    <div id="inventario" style="font-size: 24px; background: #fdf5e6; border: 2px dashed #d2b48c; border-radius: 15px; display: inline-block; padding: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05);">
-        <span id="icone-mochila" title="Mochila" style="opacity: 0.2; margin: 0 3px;">🎒</span>
-        <span id="icone-protetor" title="Protetor Solar" style="opacity: 0.2; margin: 0 3px;">🧴</span>
-        <span id="icone-cantil" title="Cantil" style="opacity: 0.2; margin: 0 3px;">💧</span>
-        <span id="icone-pederneira" title="Pederneira" style="opacity: 0.2; margin: 0 3px;">🔥</span>
-        <span id="icone-lanterna" title="Lanterna" style="opacity: 0.2; margin: 0 3px;">🔦</span>
-        <span id="icone-bussola" title="Bússola" style="opacity: 0.2; margin: 0 3px;">🧭</span>
-        <span id="icone-botas" title="Botas de Trilha" style="opacity: 0.2; margin: 0 3px;">🥾</span>
-        <span id="icone-capa_chuva" title="Capa de Chuva" style="opacity: 0.2; margin: 0 3px;">🧥</span>
-        <span id="icone-luneta" title="Luneta" style="opacity: 0.2; margin: 0 3px;">🔭</span>
-        <span id="icone-corda" title="Corda" style="opacity: 0.2; margin: 0 3px;">🪢</span>
-        <span id="icone-canivete" title="Canivete Suíço" style="opacity: 0.2; margin: 0 3px;">🔪</span>
-        <span id="icone-saco" title="Saco de Dormir" style="opacity: 0.2; margin: 0 3px;">💤</span>
     </div>
-</div>
- <h2 id="titulo-resultado">Datas de Hoje</h2>
+
+    <div id="resultado-busca" style="margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;"></div>
+
+    <div id="inventario-container" style="text-align: center; margin-top: 20px;">
+        <p style="font-size: 0.8em; color: #8b4513; margin-bottom: 5px;"><strong>Equipamentos de Expedição</strong></p>
+        <div id="inventario" style="font-size: 24px; background: #fdf5e6; border: 2px dashed #d2b48c; border-radius: 15px; display: inline-block; padding: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05);">
+            <span id="icone-mochila" title="Mochila" style="opacity: 0.2; margin: 0 3px;">🎒</span>
+            <span id="icone-protetor" title="Protetor Solar" style="opacity: 0.2; margin: 0 3px;">🧴</span>
+            <span id="icone-cantil" title="Cantil" style="opacity: 0.2; margin: 0 3px;">💧</span>
+            <span id="icone-pederneira" title="Pederneira" style="opacity: 0.2; margin: 0 3px;">🔥</span>
+            <span id="icone-lanterna" title="Lanterna" style="opacity: 0.2; margin: 0 3px;">🔦</span>
+            <span id="icone-bussola" title="Bússola" style="opacity: 0.2; margin: 0 3px;">🧭</span>
+            <span id="icone-botas" title="Botas de Trilha" style="opacity: 0.2; margin: 0 3px;">🥾</span>
+            <span id="icone-capa_chuva" title="Capa de Chuva" style="opacity: 0.2; margin: 0 3px;">🧥</span>
+            <span id="icone-luneta" title="Luneta" style="opacity: 0.2; margin: 0 3px;">🔭</span>
+            <span id="icone-corda" title="Corda" style="opacity: 0.2; margin: 0 3px;">🪢</span>
+            <span id="icone-canivete" title="Canivete Suíço" style="opacity: 0.2; margin: 0 3px;">🔪</span>
+            <span id="icone-saco" title="Saco de Dormir" style="opacity: 0.2; margin: 0 3px;">💤</span>
+        </div>
+    </div>
+
+    <h2 id="titulo-resultado">Datas de Hoje</h2>
     <div id="resultado"></div>
 
-        <div class="conteudo-extra">
-            <h3>🎸 O "Dia Mundial" que só o Brasil comemora?</h3>
-            <p>Você sabia que o <strong>Dia Mundial do Rock</strong> (13 de julho) só é "mundial" aqui no Brasil? A ideia surgiu de um comentário do músico Phil Collins em 1985. Enquanto o resto do planeta seguiu a vida, as rádios brasileiras adotaram a data com tanta força que hoje ela faz parte do nosso calendário cultural. Isso mostra o poder que o público tem de oficializar uma celebração pelo puro entusiasmo!</p>
-
-            <h3>🌏 Datas Iguais, Dias Diferentes</h3>
-            <p>O calendário é um camaleão. O <strong>Dia dos Pais</strong>, por exemplo, é a data que mais varia no globo:</p>
-            <ul>
-                <li><strong>Brasil:</strong> 2º domingo de agosto (ligado ao dia de São Joaquim).</li>
-                <li><strong>EUA e Inglaterra:</strong> 3º domingo de junho.</li>
-                <li><strong>Portugal e Espanha:</strong> 19 de março (Dia de São José).</li>
-                <li><strong>Tailândia:</strong> 5 de dezembro (aniversário do antigo Rei).</li>
-            </ul>
-            <p>Já o <strong>Dia dos Namorados</strong> no Brasil é em 12 de junho por um motivo comercial (estratégia para o mês de junho), enquanto no exterior o <em>Valentine's Day</em> é em 14 de fevereiro.</p>
-            
-            <h3>🤡 "Qualquer um pode criar uma data?"</h3>
-            <p>Se você acha que precisa de um decreto assinado pelo presidente para criar uma data, se enganou. Existem as datas oficiais e as <strong>datas do povo</strong>. O famoso <strong>"Dia do Corno"</strong> ou o <strong>"Dia da Sogra"</strong> não estão em nenhum livro de leis, mas vivem no folclore e nos memes. </p>
-            <p>Para uma data nascer, você não precisa marcar um gol no Maracanã ou fazer jejum. Você só precisa de <strong>uma boa história e repetição</strong>. Se as pessoas abraçam a ideia e começam a celebrar, a data passa a existir no coração das pessoas e nas buscas do Google!</p>
-            
-            <h3>A missão do Bom Mensageiro</h3>
-            <p>Nossa missão é transformar esses dias em momentos de carinho. Seja para homenagear o carteiro, o diretor escolar ou mandar um bom dia especial, o importante é a intenção por trás da mensagem. O calendário de datas comemorativas é uma ferramenta poderosa para conectar pessoas através de mensagens de otimismo e gratidão diariamente.</p>
-        </div>
-
-        <a href="https://www.kwai.com/@Bommensageiro" target="_blank" class="btn-kwai">
-            🎬 Siga @Bommensageiro no Kwai
-        </a>
+    <div class="conteudo-extra">
+        <h3>🎸 O "Dia Mundial" que só o Brasil comemora?</h3>
+        <p>Você sabia que o <strong>Dia Mundial do Rock</strong> (13 de julho) só é "mundial" aqui no Brasil? A ideia surgiu de um comentário do músico Phil Collins em 1985. Enquanto o resto do planeta seguiu a vida, as rádios brasileiras adotaram a data com tanta força que hoje ela faz parte do nosso calendário cultural.</p>
+        
+        <h3>A missão do Bom Mensageiro</h3>
+        <p>Nossa missão é transformar esses dias em momentos de carinho. Seja para homenagear o carteiro, o diretor escolar ou mandar um bom dia especial, o importante é a intenção por trás da mensagem.</p>
     </div>
 
-   <script src="calendario.js"></script>
-    <script>
-        // 1. Função que ignora acentos e letras maiúsculas (O fim do problema do Tiramisù!)
-        function normalizar(texto) {
-            return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    <a href="https://www.kwai.com/@Bommensageiro" target="_blank" class="btn-kwai">
+        🎬 Siga @Bommensageiro no Kwai
+    </a>
+</div>
+
+<div id="cookie-banner" style="display: none; position: fixed; bottom: 0; width: 100%; background: #fffdf0; border-top: 2px solid #ff5000; padding: 15px; text-align: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 9999;">
+    <p style="color: #8b4513; margin-bottom: 10px;">O Bom Mensageiro usa cookies para melhorar sua expedição. Tudo bem? 🧭</p>
+    <button onclick="aceitarCookies()" style="background: #ff5000; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer;">Aceito!</button>
+</div>
+
+<script src="calendario.js"></script>
+<script>
+    function normalizar(texto) {
+        return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    }
+
+    window.onload = function() {
+        const selDia = document.getElementById('sel-dia');
+        const selMes = document.getElementById('sel-mes');
+        const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
+        if(selDia && selMes) {
+            for(let i=1; i<=31; i++) selDia.innerHTML += `<option value="${i}">${i}</option>`;
+            meses.forEach((m, i) => selMes.innerHTML += `<option value="${i}">${m}</option>`);
+
+            const hoje = new Date();
+            selDia.value = hoje.getDate();
+            selMes.value = hoje.getMonth();
+            buscarData(hoje.getDate(), hoje.getMonth());
         }
 
-        // 2. O que acontece quando o site abre
-        window.onload = function() {
-            const selDia = document.getElementById('sel-dia');
-            const selMes = document.getElementById('sel-mes');
-            const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        if (!localStorage.getItem('cookiesAceitos')) {
+            document.getElementById('cookie-banner').style.display = 'block';
+        }
+    };
 
-            if(selDia && selMes) {
-                for(let i=1; i<=31; i++) selDia.innerHTML += `<option value="${i}">${i}</option>`;
-                meses.forEach((m, i) => selMes.innerHTML += `<option value="${i}">${m}</option>`);
+    function buscarData(diaManual, mesManual) {
+        const dia = diaManual || document.getElementById('sel-dia').value;
+        const mes = mesManual !== undefined ? mesManual : document.getElementById('sel-mes').value;
+        const chave = `${mes}-${dia}`;
+        const container = document.getElementById('resultado');
+        const titulo = document.getElementById('titulo-resultado');
+        
+        if(titulo) titulo.innerText = `Homenagens para ${dia}/${parseInt(mes)+1}`;
 
-                const hoje = new Date();
-                selDia.value = hoje.getDate();
-                selMes.value = hoje.getMonth();
-                buscarData(hoje.getDate(), hoje.getMonth());
-            }
+        if (typeof datasComemorativas !== 'undefined' && datasComemorativas[chave]) {
+            exibirResultados(datasComemorativas[chave], container);
+        } else {
+            container.innerHTML = "<p>Ainda não temos homenagens cadastradas para este dia.</p>";
+        }
+    }
 
-            if (!localStorage.getItem('cookiesAceitos')) {
-                document.getElementById('cookie-banner').style.display = 'block';
-            }
-        };
+    function buscarPorTema() {
+        const campo = document.getElementById('campo-busca');
+        const termo = normalizar(campo.value);
+        const container = document.getElementById('resultado-busca');
+        container.innerHTML = ""; 
 
-        // 3. Função de busca por Data (os seletores de Dia e Mês)
-        function buscarData(diaManual, mesManual) {
-            const dia = diaManual || document.getElementById('sel-dia').value;
-            const mes = mesManual !== undefined ? mesManual : document.getElementById('sel-mes').value;
-            const chave = `${mes}-${dia}`;
-            const container = document.getElementById('resultado');
-            const titulo = document.getElementById('titulo-resultado');
-            
-            if(titulo) titulo.innerText = `Homenagens para ${dia}/${parseInt(mes)+1}`;
-
-            if (typeof datasComemorativas !== 'undefined' && datasComemorativas[chave]) {
-                exibirResultados(datasComemorativas[chave], container);
-            } else {
-                container.innerHTML = "<p>Ainda não temos homenagens cadastradas para este dia. Sugira uma no nosso Kwai!</p>";
-            }
+        if (termo.length < 3) {
+            alert("Digite pelo menos 3 letras para o Oráculo te responder! 🧭");
+            return;
         }
 
-        // 4. Nova função de busca por Tema (O "Oráculo" Inteligente)
-        function buscarPorTema() {
-            const campo = document.getElementById('campo-busca');
-            const termo = normalizar(campo.value);
-            const container = document.getElementById('resultado-busca');
-            
-            container.innerHTML = ""; 
-
-            if (termo.length < 3) {
-                alert("Digite pelo menos 3 letras para o Oráculo te responder! 🧭");
-                return;
-            }
-
-            let achou = [];
-
-            // Varre o objeto datasComemorativas que está no seu calendario.js
-            for (let chave in datasComemorativas) {
-                datasComemorativas[chave].forEach(item => {
-                    const tituloLimpo = normalizar(item.t);
-                    if (tituloLimpo.includes(termo)) {
-                        achou.push(item);
-                    }
-                });
-            }
-
-            if (achou.length > 0) {
-                exibirResultados(achou, container);
-                container.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                container.innerHTML = "<p style='color: #8b4513; margin-top: 20px;'>O Oráculo não encontrou esse tema... tente outra palavra! 🧐</p>";
-            }
+        let achou = [];
+        for (let chave in datasComemorativas) {
+            datasComemorativas[chave].forEach(item => {
+                if (normalizar(item.t).includes(termo)) {
+                    achou.push(item);
+                }
+            });
         }
 
-        // 5. Função para desenhar os resultados na tela
-        function exibirResultados(lista, container) {
-            container.innerHTML = lista.map(ev => `
-                <div class="card" style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 5px solid #ff5000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: left;">
-                    <strong style="color: #ff5000;">${ev.t}</strong><br>
-                    <span style="color: #333;">${ev.m}</span>
-                    <hr style="border: 0; border-top: 1px dashed #ddd; margin: 10px 0;">
-                    <span style="font-size: 0.75em; color: #aaa; font-style: italic;">
-                        🛠️ Seção Pedagógica: Em construção...
-                    </span>
-                </div>
-            `).join('');
+        if (achou.length > 0) {
+            exibirResultados(achou, container);
+            container.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            container.innerHTML = "<p style='color: #8b4513; margin-top: 20px;'>O Oráculo não encontrou esse tema... tente outra palavra! 🧐</p>";
         }
+    }
 
-        function aceitarCookies() {
-            localStorage.setItem('cookiesAceitos', 'true');
-            document.getElementById('cookie-banner').style.display = 'none';
-        }
-    </script>
+    function exibirResultados(lista, container) {
+        container.innerHTML = lista.map(ev => `
+            <div class="card" style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 5px solid #ff5000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: left;">
+                <strong style="color: #ff5000;">${ev.t}</strong><br>
+                <span style="color: #333;">${ev.m}</span>
+            </div>
+        `).join('');
+    }
+
+    function aceitarCookies() {
+        localStorage.setItem('cookiesAceitos', 'true');
+        document.getElementById('cookie-banner').style.display = 'none';
+    }
+</script>
+</body>
+</html>
