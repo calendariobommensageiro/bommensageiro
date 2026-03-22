@@ -83,8 +83,14 @@
         </a>
     </div>
 
-    <script src="calendario.js"></script>
+   <script src="calendario.js"></script>
     <script>
+        // 1. Função que ignora acentos e letras maiúsculas (O fim do problema do Tiramisù!)
+        function normalizar(texto) {
+            return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+        }
+
+        // 2. O que acontece quando o site abre
         window.onload = function() {
             const selDia = document.getElementById('sel-dia');
             const selMes = document.getElementById('sel-mes');
@@ -105,6 +111,7 @@
             }
         };
 
+        // 3. Função de busca por Data (os seletores de Dia e Mês)
         function buscarData(diaManual, mesManual) {
             const dia = diaManual || document.getElementById('sel-dia').value;
             const mes = mesManual !== undefined ? mesManual : document.getElementById('sel-mes').value;
@@ -115,15 +122,57 @@
             if(titulo) titulo.innerText = `Homenagens para ${dia}/${parseInt(mes)+1}`;
 
             if (typeof datasComemorativas !== 'undefined' && datasComemorativas[chave]) {
-                const eventos = datasComemorativas[chave];
-                container.innerHTML = eventos.map(ev => `
-                    <div class="card" style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 5px solid #ff5000; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                        <strong>${ev.t}</strong><br>${ev.m}
-                    </div>
-                `).join('');
+                exibirResultados(datasComemorativas[chave], container);
             } else {
                 container.innerHTML = "<p>Ainda não temos homenagens cadastradas para este dia. Sugira uma no nosso Kwai!</p>";
             }
+        }
+
+        // 4. Nova função de busca por Tema (O "Oráculo" Inteligente)
+        function buscarPorTema() {
+            const campo = document.getElementById('campo-busca');
+            const termo = normalizar(campo.value);
+            const container = document.getElementById('resultado-busca');
+            
+            container.innerHTML = ""; 
+
+            if (termo.length < 3) {
+                alert("Digite pelo menos 3 letras para o Oráculo te responder! 🧭");
+                return;
+            }
+
+            let achou = [];
+
+            // Varre o objeto datasComemorativas que está no seu calendario.js
+            for (let chave in datasComemorativas) {
+                datasComemorativas[chave].forEach(item => {
+                    const tituloLimpo = normalizar(item.t);
+                    if (tituloLimpo.includes(termo)) {
+                        achou.push(item);
+                    }
+                });
+            }
+
+            if (achou.length > 0) {
+                exibirResultados(achou, container);
+                container.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                container.innerHTML = "<p style='color: #8b4513; margin-top: 20px;'>O Oráculo não encontrou esse tema... tente outra palavra! 🧐</p>";
+            }
+        }
+
+        // 5. Função para desenhar os resultados na tela
+        function exibirResultados(lista, container) {
+            container.innerHTML = lista.map(ev => `
+                <div class="card" style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 5px solid #ff5000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: left;">
+                    <strong style="color: #ff5000;">${ev.t}</strong><br>
+                    <span style="color: #333;">${ev.m}</span>
+                    <hr style="border: 0; border-top: 1px dashed #ddd; margin: 10px 0;">
+                    <span style="font-size: 0.75em; color: #aaa; font-style: italic;">
+                        🛠️ Seção Pedagógica: Em construção...
+                    </span>
+                </div>
+            `).join('');
         }
 
         function aceitarCookies() {
@@ -131,33 +180,3 @@
             document.getElementById('cookie-banner').style.display = 'none';
         }
     </script>
-
-    <div id="cookie-banner" style="position: fixed; bottom: 0; left: 0; width: 100%; background: #333; color: #fff; padding: 15px; text-align: center; font-size: 14px; z-index: 9999; display: none;">
-        Este site usa cookies para garantir que você tenha a melhor experiência. 
-        <a href="privacidade.html" style="color: #ff5000; text-decoration: underline;">Saiba mais</a>.
-        <button onclick="aceitarCookies()" style="background: #ff5000; color: white; border: none; padding: 5px 15px; margin-left: 15px; cursor: pointer; border-radius: 5px; font-weight: bold;">Aceitar</button>
-    </div>
-<hr style="border: 0.5px solid #ddd; margin: 40px 0;">
-<div id="arquivo-homenagens" style="opacity: 0.7; font-size: 0.9em; padding: 10px;">
-    <h4 style="color: #888;">Homenagens Recentes:</h4>
-    <p><strong>8 de Março:</strong> Celebramos o Dia Internacional da Mulher com mensagens de força e inspiração. <a href="#" style="color: #e67e22;">Clique aqui para rever.</a></p>
-</div>
-    <footer style="text-align: center; padding: 20px; font-size: 14px; border-top: 1px solid #eee; margin-top: 20px;">
-        <a href="privacidade.html" style="color: #888; text-decoration: none;">Política de Privacidade</a>
-    </footer>
-<div style="margin-top: 60px; padding: 20px; border-top: 1px solid #eee; font-family: sans-serif; color: #666;">
-    <h3 style="font-size: 1.1em; color: #444;">📚 Arquivo de Curiosidades</h3>
-    
-<div id="resultado-busca" style="margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;"></div>
-
-    <a href="https://www.kwai.com/@bommensageiro" target="_blank" class="btn-kwai-flutuante">
-        <img src="https://img.icons8.com/color/48/kwai.png" alt="Kwai">
-        <span>Kwai</span>
-    </a>
-
-</body>
-</html>
-
-
-
-
