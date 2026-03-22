@@ -253,8 +253,12 @@ const datasComemorativas = {
 "2-21": [
             { t: "Dia Mundial da Síndrome de Down", m: "Celebrando a diversidade e a inclusão! ❤️" },
             { t: "Dia do Pão Francês", m: "Quentinho e com manteiga, o melhor do dia! 🥖☕" },
+            { t: "Dia Internacional do Tiramisù", m: "Um pedacinho da Itália no seu dia! ☕🍰" },
             { t: "Dia Internacional Contra a Discriminação Racial", m: "Por um mundo com mais respeito e igualdade!" },
             { t: "Dia Mundial da Poesia", m: "A arte de traduzir a alma em versos! 📖" },
+            { t: "Dia Internacional das Florestas", m: "Proteger nossas florestas é garantir o ar que respiramos! 🌳🍃" },
+            { t: "Dia Internacional da Cefaleia em Salvas", m: "Conscientização e apoio a quem convive com essa dor. 🤝🧠" },
+            { t: "Dia Universal do Teatro", m: "O mundo é um palco e hoje a salva de palmas é sua! 🎭" },
             { t: "Dia Mundial da Infância", m: "Protegendo os direitos dos nossos pequenos! 🧸" }
         ],
         "2-22": [
@@ -263,6 +267,7 @@ const datasComemorativas = {
         ],
         "2-23": [
             { t: "Dia Mundial da Meteorologia", m: "De olho no clima e no tempo! 🌦️" },
+            { t: "Dia Nacional do Piso Salarial dos Professores", m: "Valorizar o professor é garantir o futuro do país! 🍎📚" },
             { t: "Aniversário de Florianópolis/SC", m: "Parabéns à Ilha da Magia! 🌊" },
             { t: "Dia do Optometrista (Brasil)", m: "Homenagem aos profissionais da visão! 👁️" }
         ],
