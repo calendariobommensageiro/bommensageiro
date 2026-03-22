@@ -2,15 +2,22 @@
   "name": "Bom Mensageiro",
   "short_name": "Mensageiro",
   "description": "O Oráculo das Datas Comemorativas e Homenagens.",
-  "start_url": "index.html",
+  "start_url": "/bommensageiro/",
   "display": "standalone",
   "background_color": "#ff5000",
   "theme_color": "#ff5000",
   "icons": [
     {
+      "src": "mascotesite.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "splash.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
