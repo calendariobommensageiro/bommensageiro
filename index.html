@@ -127,17 +127,19 @@
 
     function buscarPorTema() {
         const campo = document.getElementById('campo-busca');
+       function buscarPorTema() {
+        const campo = document.getElementById('campo-busca');
         const termo = normalizar(campo.value);
         const container = document.getElementById('resultado-busca');
         container.innerHTML = ""; 
 
         if (termo.length < 3) {
-           if (termo.length < 3) {
             alert("Digite pelo menos 3 letras para o Oráculo! 🧭");
             return;
-        } // 
+        }
 
         let achou = [];
+        if (typeof datasComemorativas !== 'undefined') {
             for (let chave in datasComemorativas) {
                 datasComemorativas[chave].forEach(item => {
                     if (normalizar(item.t).includes(termo)) {
@@ -155,7 +157,7 @@
         } else {
             container.innerHTML = "<p style='color: #8b4513; margin-top: 20px;'>O Oráculo não encontrou esse tema... 🧐</p>";
         }
-    } //
+    }
 
     function exibirResultados(lista, container) {
         container.innerHTML = lista.map(ev => {
@@ -176,6 +178,12 @@
                     </div>
                 </div>`;
         }).join('');
+    }
+
+    function aceitarCookies() {
+        localStorage.setItem('cookiesAceitos', 'true');
+        const banner = document.getElementById('cookie-banner');
+        if(banner) banner.style.display = 'none';
     }
 </script>
 </body>
