@@ -132,10 +132,12 @@
         container.innerHTML = ""; 
 
         if (termo.length < 3) {
+           if (termo.length < 3) {
             alert("Digite pelo menos 3 letras para o Oráculo! 🧭");
             return;
-       let achou = [];
-        if (typeof datasComemorativas !== 'undefined') {
+        } // 
+
+        let achou = [];
             for (let chave in datasComemorativas) {
                 datasComemorativas[chave].forEach(item => {
                     if (normalizar(item.t).includes(termo)) {
