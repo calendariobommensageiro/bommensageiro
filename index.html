@@ -183,6 +183,27 @@
         const banner = document.getElementById('cookie-banner');
         if(banner) banner.style.display = 'none';
     }
-</script>
+</script> 
+<a href="https://www.kwai.com/@Bommensageiro" target="_blank" style="position: fixed; bottom: 20px; right: 20px; background-color: #ff5000; color: white; text-decoration: none; padding: 12px 20px; border-radius: 30px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10000; display: flex; align-items: center; gap: 8px; transition: transform 0.3s;">
+    <span style="font-size: 20px;">🎬</span> 
+    Cards mais legais no Kwai
+</a>
+
+<style>
+    /* Efeito de balanço para chamar atenção */
+    @keyframes balanco {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    a[href*="kwai"]:hover {
+        transform: scale(1.1);
+        background-color: #e64500;
+    }
+    /* Faz o botão pulsar de leve */
+    a[href*="kwai"] {
+        animation: balanco 2s infinite ease-in-out;
+    }
+</style>
 </body>
 </html>
