@@ -410,11 +410,11 @@ const datasComemorativas = {
             { t: "Dia de São Hunna", m: "Conhecida como 'A Lavadeira Sagrada' pela sua caridade." },
             { t: "Dia do Ciclista (Nacional)", m: "Saúde e liberdade sobre duas rodas! 🚲" }
         ],
-        "3-16": [
+       "3-16": [
             { t: "Dia Mundial da Voz", m: "Cuide do seu instrumento de comunicação! 🗣️" },
             { t: "Dia Nacional do Policial Rodoviário Federal", m: "Segurança e ordem nas nossas rodovias! 🚔" },
             { t: "Dia de Santa Bernadette", m: "A vidente de Nossa Senhora de Lourdes. 🙏" },
-            { t: "Dia do Comercio de Couros e Peles", m: "Homenagem ao setor coureiro!" }
+            { t: "Dia do Comercio de Couros e Peles", m: "Homenagem ao setor coureiro!" },
             { t: "Dia Nacional do Lions Clube", m: "Servir à comunidade com dedicação!" }
         ],
         "3-17": [
@@ -427,8 +427,7 @@ const datasComemorativas = {
             { t: "Dia Nacional do Livro Infantil", m: "Homenagem ao nascimento de Monteiro Lobato! 📖" },
             { t: "Dia do Amigo Espírita", m: "Fraternidade e luz no caminho espiritual." },
             { t: "Dia de São Galdino", m: "Bispo e defensor da fé." },
-            { t: "Dia do Geólogo", m: "Desvendando a história da Terra através das rochas! 💎" },
-            
+            { t: "Dia do Geólogo", m: "Desvendando a história da Terra através das rochas! 💎" }
         ],
 "3-19": [
             { t: "Dia dos Povos Indígenas", m: "Respeito e proteção à cultura e raízes do Brasil! 🏹" },
