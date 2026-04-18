@@ -415,6 +415,7 @@ const datasComemorativas = {
             { t: "Dia Nacional do Policial Rodoviário Federal", m: "Segurança e ordem nas nossas rodovias! 🚔" },
             { t: "Dia de Santa Bernadette", m: "A vidente de Nossa Senhora de Lourdes. 🙏" },
             { t: "Dia do Comercio de Couros e Peles", m: "Homenagem ao setor coureiro!" }
+            { t: "Dia Nacional do Lions Clube", m: "Servir à comunidade com dedicação!" }
         ],
         "3-17": [
             { t: "Dia Mundial da Hemofilia", m: "Conscientização e apoio ao tratamento. ❤️" },
@@ -427,7 +428,7 @@ const datasComemorativas = {
             { t: "Dia do Amigo Espírita", m: "Fraternidade e luz no caminho espiritual." },
             { t: "Dia de São Galdino", m: "Bispo e defensor da fé." },
             { t: "Dia do Geólogo", m: "Desvendando a história da Terra através das rochas! 💎" },
-            { t: "Dia Nacional do Lions Clube", m: "Servir à comunidade com dedicação!" }
+            
         ],
 "3-19": [
             { t: "Dia dos Povos Indígenas", m: "Respeito e proteção à cultura e raízes do Brasil! 🏹" },
