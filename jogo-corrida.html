@@ -1,84 +1,51 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Corrida do Bom Mensageiro</title>
+    <title>Bom Mensageiro: Beta 2.0</title>
     <style>
-        * { padding: 0; margin: 0; box-sizing: border-box; }
-        body { background: #f0f0f0; font-family: sans-serif; overflow: hidden; text-align: center; user-select: none; }
-        #jogo { width: 100%; max-width: 600px; height: 300px; background: #e0f7fa; margin: 20px auto; border-bottom: 5px solid #4caf50; position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        #mascote { width: 40px; height: 50px; background: #0066cc; position: absolute; bottom: 0; left: 50px; border-radius: 4px; font-size: 25px; display: flex; align-items: center; justify-content: center; }
-        .pulo { animation: pular 0.6s linear; }
-        #obstaculo { width: 30px; height: 30px; background: #ff5722; position: absolute; bottom: 0; right: -30px; border-radius: 50px; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-        .correr { animation: moverObstaculo 1.5s infinite linear; }
-        #placar { font-size: 24px; font-weight: bold; margin-top: 10px; color: #333; }
-        #aviso { font-size: 14px; color: #666; margin-top: 5px; }
-        #btn-reiniciar { display: none; margin: 15px auto; padding: 10px 20px; font-size: 16px; background: #4caf50; color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
-        @keyframes pular { 
-            0%, 100% { bottom: 0; } 
-            50% { bottom: 100px; } 
-        }
-        @keyframes moverObstaculo { 
-            0% { right: -30px; } 
-            100% { right: 100%; } 
-        }
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #333; }
+        #jogo { width: 800px; height: 400px; background: url('assets/cenariobeta.png'); background-size: cover; position: relative; overflow: hidden; }
+        #mascote { width: 80px; height: 80px; position: absolute; bottom: 0; background: url('assets/jogadorbeta.png') no-repeat; background-size: contain; }
+        #obstaculo { width: 50px; height: 50px; position: absolute; bottom: 0; right: -50px; background: url('assets/ampulhetabeta.png') no-repeat; background-size: contain; }
+        #placar { font-size: 50px; text-align: center; color: white; position: absolute; width: 100%; top: 40%; font-family: sans-serif; }
+        .pular { animation: pulo 0.6s linear; }
+        @keyframes pulo { 0% { bottom: 0; } 30% { bottom: 150px; } 70% { bottom: 150px; } 100% { bottom: 0; } }
     </style>
 </head>
 <body>
-
-    <h2 style="margin-top: 20px; color: #0066cc;">🏃‍♂️ Corrida do Bom Mensageiro</h2>
-    <div id="placar">Pontos: 0</div>
-    <div id="aviso">Toque na tela ou aperte ESPAÇO para pular!</div>
-
-    <div id="jogo" id="area-jogo">
-        <div id="mascote">🏃‍♂️</div>
-        <div id="obstaculo" class="correr">⏰</div>
+    <div id="jogo">
+        <div id="placar"></div>
+        <div id="mascote"></div>
+        <div id="obstaculo"></div>
     </div>
-
-    <button id="btn-reiniciar" onclick="reiniciarJogo()">Jogar Novamente</button>
-    
-    <p style="margin-top: 20px;"><a href="index.html" style="color: #0066cc; text-decoration: none; font-weight: bold;">← Voltar para o Site</a></p>
-
     <script>
-        const mascote = document.getElementById("mascote");
-        const obstaculo = document.getElementById("obstaculo");
-        const placar = document.getElementById("placar");
-        const btnReiniciar = document.getElementById("btn-reiniciar");
-        let pontos = 0;
-        let vivo = true;
-
-        // Comando para Pular
-        function pular() {
-            if (!mascote.classList.contains("pulo") && vivo) {
-                mascote.classList.add("pulo");
-                setTimeout(() => { mascote.classList.remove("pulo"); }, 600);
-                if(vivo) { pontos++; placar.innerText = "Pontos: " + pontos; }
-            }
+        const mascote = document.getElementById('mascote');
+        const placar = document.getElementById('placar');
+        
+        // Função de contagem simples
+        function iniciarBeta2() {
+            let tempo = 3;
+            let cronometro = setInterval(() => {
+                placar.innerText = tempo;
+                tempo--;
+                if(tempo < 0) {
+                    clearInterval(cronometro);
+                    placar.innerText = "GO!";
+                    setTimeout(() => { placar.innerText = ""; }, 1000);
+                }
+            }, 1000);
         }
-
-        // Detectar teclado ou toque no celular
-        document.addEventListener("keydown", (e) => { if (e.code === "Space") pular(); });
-        document.getElementById("jogo").addEventListener("touchstart", pular);
-
-        // Checar colisão (Game Over)
-        const checarColisao = setInterval(() => {
-            const mascoteBottom = parseInt(window.getComputedStyle(mascote).getPropertyValue("bottom"));
-            const obstaculoLeft = parseInt(window.getComputedStyle(obstaculo).getPropertyValue("left"));
-
-            // Se o obstáculo bater no jogador
-            if (obstaculoLeft > 50 && obstaculoLeft < 90 && mascoteBottom <= 30) {
-                vivo = false;
-                obstaculo.classList.remove("correr");
-                obstaculo.style.left = obstaculoLeft + "px";
-                placar.innerText = "Fim de Jogo! Pontos finais: " + pontos;
-                btnReiniciar.style.display = "block";
+        
+        iniciarBeta2();
+        
+        // Pulo
+        document.addEventListener('keydown', () => {
+            if(!mascote.classList.contains('pular')) {
+                mascote.classList.add('pular');
+                setTimeout(() => { mascote.classList.remove('pular'); }, 600);
             }
-        }, 10);
-
-        function reiniciarJogo() {
-            window.location.reload();
-        }
+        });
     </script>
 </body>
 </html>
