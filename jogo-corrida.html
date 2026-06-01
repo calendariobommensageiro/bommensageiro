@@ -5,10 +5,40 @@
     <title>Bom Mensageiro: Beta 2.0</title>
     <style>
         body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #333; }
-        #jogo { width: 800px; height: 400px; background: url('assets/cenariobeta.png'); background-size: cover; position: relative; overflow: hidden; }
-        #mascote { width: 80px; height: 80px; position: absolute; bottom: 0; background: url('assets/jogadorbeta.png') no-repeat; background-size: contain; }
-        #obstaculo { width: 50px; height: 50px; position: absolute; bottom: 0; right: -50px; background: url('assets/ampulhetabeta.png') no-repeat; background-size: contain; }
-        #placar { font-size: 50px; text-align: center; color: white; position: absolute; width: 100%; top: 40%; font-family: sans-serif; }
+        
+        #jogo { 
+            width: 800px; 
+            height: 400px; 
+            /* Aqui apontamos para o seu arquivo JPG */
+            background: url('assets/cenariobeta.jpg'); 
+            background-size: cover; 
+            background-position: bottom;
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        #mascote { 
+            width: 80px; 
+            height: 80px; 
+            position: absolute; 
+            bottom: 0; 
+            /* Aqui apontamos para o seu arquivo PNG */
+            background: url('assets/jogadorbeta.png') no-repeat; 
+            background-size: contain; 
+        }
+
+        #obstaculo { 
+            width: 50px; 
+            height: 50px; 
+            position: absolute; 
+            bottom: 0; 
+            right: -50px; 
+            background: url('assets/ampulhetabeta.png') no-repeat; 
+            background-size: contain; 
+        }
+
+        #placar { font-size: 50px; text-align: center; color: white; position: absolute; width: 100%; top: 40%; font-family: sans-serif; text-shadow: 2px 2px #000; }
+        
         .pular { animation: pulo 0.6s linear; }
         @keyframes pulo { 0% { bottom: 0; } 30% { bottom: 150px; } 70% { bottom: 150px; } 100% { bottom: 0; } }
     </style>
@@ -23,23 +53,24 @@
         const mascote = document.getElementById('mascote');
         const placar = document.getElementById('placar');
         
-        // Função de contagem simples
         function iniciarBeta2() {
             let tempo = 3;
+            placar.innerText = tempo;
             let cronometro = setInterval(() => {
-                placar.innerText = tempo;
                 tempo--;
-                if(tempo < 0) {
-                    clearInterval(cronometro);
+                if(tempo > 0) {
+                    placar.innerText = tempo;
+                } else if (tempo === 0) {
                     placar.innerText = "GO!";
-                    setTimeout(() => { placar.innerText = ""; }, 1000);
+                } else {
+                    clearInterval(cronometro);
+                    placar.innerText = "";
                 }
             }, 1000);
         }
         
         iniciarBeta2();
         
-        // Pulo
         document.addEventListener('keydown', () => {
             if(!mascote.classList.contains('pular')) {
                 mascote.classList.add('pular');
