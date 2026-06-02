@@ -6,14 +6,15 @@
     <style>
         body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #333; }
         
-      #jogo { 
+    #jogo { 
     width: 800px; 
     height: 400px; 
-    /* Aqui está o segredo: */
+    /* Mudamos para '100% 100%' para forçar o esticamento da imagem */
     background-image: url('cenariobeta.jpg');
-    background-size: 100% 100%; /* Isso força a imagem a esticar em toda a área */
+    background-size: 100% 100%; 
     background-repeat: no-repeat;
-    background-color: #87CEEB; /* Cor de segurança para o que sobrar */
+    /* Adicionamos uma cor de fundo para tapar qualquer fresta */
+    background-color: #87CEEB; 
     position: relative; 
     overflow: hidden; 
     border: 4px solid #000; 
