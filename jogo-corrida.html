@@ -9,13 +9,10 @@
         #jogo { 
             width: 800px; 
             height: 400px; 
-            /* Imagens agora estão sem o "assets/" */
-            background: url('cenariobeta.jpg'); 
-            background-size: cover; 
-            background-position: bottom;
-            background-color: #87CEEB; /* Adicione uma cor de céu ou terra aqui */
-    ...
-}
+            /* Imagem de fundo alinhada embaixo com cor sólida para cobrir espaços */
+            background: url('cenariobeta.jpg') no-repeat center bottom; 
+            background-size: cover;
+            background-color: #87CEEB; 
             position: relative; 
             overflow: hidden; 
             border: 4px solid #000; 
@@ -25,9 +22,9 @@
             width: 80px; 
             height: 80px; 
             position: absolute; 
-            bottom: 0; 
+            /* Ajuste o 'bottom' conforme a altura da sua estrada na imagem */
+            bottom: 20px; 
             left: 50px;
-            /* Imagens agora estão sem o "assets/" */
             background: url('jogadorbeta.png') no-repeat; 
             background-size: contain; 
         }
@@ -36,9 +33,9 @@
             width: 50px; 
             height: 50px; 
             position: absolute; 
-            bottom: 0; 
+            /* Alinhado com a mesma altura do personagem */
+            bottom: 20px; 
             right: -50px; 
-            /* Imagens agora estão sem o "assets/" */
             background: url('ampulhetabeta.png') no-repeat; 
             background-size: contain; 
         }
@@ -48,7 +45,7 @@
         
         #placar { font-size: 50px; text-align: center; color: white; position: absolute; width: 100%; top: 40%; font-family: sans-serif; text-shadow: 2px 2px #000; z-index: 10; }
         .pular { animation: pulo 0.6s linear; }
-        @keyframes pulo { 0% { bottom: 0; } 30% { bottom: 150px; } 70% { bottom: 150px; } 100% { bottom: 0; } }
+        @keyframes pulo { 0% { bottom: 20px; } 30% { bottom: 170px; } 70% { bottom: 170px; } 100% { bottom: 20px; } }
     </style>
 </head>
 <body>
@@ -87,7 +84,8 @@
             if (!jogoAtivo) return;
             let mBottom = parseInt(window.getComputedStyle(mascote).getPropertyValue("bottom"));
             let oRight = parseInt(window.getComputedStyle(obstaculo).getPropertyValue("right"));
-            if (oRight > 650 && oRight < 750 && mBottom < 50) {
+            // Ajuste na lógica de colisão para respeitar a nova altura de 20px
+            if (oRight > 650 && oRight < 750 && mBottom < 70) {
                 alert("Game Over!");
                 location.reload();
             }
