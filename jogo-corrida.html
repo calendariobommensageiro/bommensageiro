@@ -13,16 +13,18 @@
             background: #333; 
         }
 
-        #jogo { 
-            width: 800px; 
-            height: 400px; 
-            background-image: url('cenariobeta.jpg'); 
-            background-size: cover; 
-            background-position: bottom;
-            position: relative; 
-            overflow: hidden; 
-            border: 4px solid #000; 
-        }
+       #jogo { 
+    width: 800px; 
+    height: 400px; 
+    background-image: url('cenariobeta.jpg'); 
+    /* 'cover' faz a imagem preencher todo o espaço sem deixar buracos */
+    background-size: cover; 
+    /* Centraliza a imagem para não cortar partes importantes */
+    background-position: center;
+    position: relative; 
+    overflow: hidden; 
+    border: 4px solid #000; 
+}
 
         /* Ajuste do Personagem */
         #personagem {
