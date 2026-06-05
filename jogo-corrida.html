@@ -4,94 +4,50 @@
     <meta charset="UTF-8">
     <title>Bom Mensageiro: Beta 2.0</title>
     <style>
-        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #333; }
-        
-    #jogo { 
-    width: 800px; 
-    height: 400px; 
-    /* Mudamos para '100% 100%' para forçar o esticamento da imagem */
-    background-image: url('cenariobeta.jpg');
-    background-size: 100% 100%; 
-    background-repeat: no-repeat;
-    /* Adicionamos uma cor de fundo para tapar qualquer fresta */
-    background-color: #87CEEB; 
-    position: relative; 
-    overflow: hidden; 
-    border: 4px solid #000; 
-}
+        body { 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background: #333; 
+        }
 
-        #mascote { 
-            width: 80px; 
-            height: 80px; 
-            position: absolute; 
-            /* Ajuste o 'bottom' conforme a altura da sua estrada na imagem */
-            bottom: 20px; 
+        #jogo { 
+            width: 800px; 
+            height: 400px; 
+            background-image: url('cenariobeta.jpg'); 
+            background-size: cover; 
+            background-position: bottom;
+            position: relative; 
+            overflow: hidden; 
+            border: 4px solid #000; 
+        }
+
+        /* Ajuste do Personagem */
+        #personagem {
+            position: absolute;
+            bottom: 50px; /* Ajuste aqui para ele subir ou descer em relação ao chão */
             left: 50px;
-            background: url('jogadorbeta.png') no-repeat; 
-            background-size: contain; 
+            width: 100px; /* Ajuste o tamanho aqui sem deformar */
+            height: auto; /* Mantém a proporção real da imagem */
         }
 
-        #obstaculo { 
-            width: 50px; 
-            height: 50px; 
-            position: absolute; 
-            /* Alinhado com a mesma altura do personagem */
-            bottom: 20px; 
-            right: -50px; 
-            background: url('ampulhetabeta.png') no-repeat; 
-            background-size: contain; 
+        /* Ajuste da Ampulheta */
+        #ampulheta {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
         }
-        
-        .mover { animation: moverObstaculo 2s infinite linear; }
-        @keyframes moverObstaculo { 0% { right: -50px; } 100% { right: 850px; } }
-        
-        #placar { font-size: 50px; text-align: center; color: white; position: absolute; width: 100%; top: 40%; font-family: sans-serif; text-shadow: 2px 2px #000; z-index: 10; }
-        .pular { animation: pulo 0.6s linear; }
-        @keyframes pulo { 0% { bottom: 20px; } 30% { bottom: 170px; } 70% { bottom: 170px; } 100% { bottom: 20px; } }
     </style>
 </head>
 <body>
+
     <div id="jogo">
-        <div id="placar">3</div>
-        <div id="mascote"></div>
-        <div id="obstaculo"></div>
+        <img id="personagem" src="jogadorbeta.png" alt="Mensageiro">
+        <img id="ampulheta" src="ampulhetabeta.png" alt="Tempo">
     </div>
-    <script>
-        const mascote = document.getElementById('mascote');
-        const obstaculo = document.getElementById('obstaculo');
-        const placar = document.getElementById('placar');
-        let jogoAtivo = false;
 
-        let tempo = 3;
-        let contagem = setInterval(() => {
-            tempo--;
-            if(tempo > 0) placar.innerText = tempo;
-            else if (tempo === 0) placar.innerText = "GO!";
-            else {
-                placar.innerText = "";
-                clearInterval(contagem);
-                jogoAtivo = true;
-                obstaculo.classList.add('mover');
-            }
-        }, 1000);
-
-        document.addEventListener('keydown', () => {
-            if(!mascote.classList.contains('pular')) {
-                mascote.classList.add('pular');
-                setTimeout(() => { mascote.classList.remove('pular'); }, 600);
-            }
-        });
-
-        let verificarColisao = setInterval(() => {
-            if (!jogoAtivo) return;
-            let mBottom = parseInt(window.getComputedStyle(mascote).getPropertyValue("bottom"));
-            let oRight = parseInt(window.getComputedStyle(obstaculo).getPropertyValue("right"));
-            // Ajuste na lógica de colisão para respeitar a nova altura de 20px
-            if (oRight > 650 && oRight < 750 && mBottom < 70) {
-                alert("Game Over!");
-                location.reload();
-            }
-        }, 50);
-    </script>
 </body>
 </html>
