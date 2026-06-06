@@ -11,8 +11,10 @@
         #jogo { 
             width: 800px; 
             height: 400px; 
-            background: url('cenariobeta.jpg') no-repeat center bottom; 
-            background-size: cover; 
+            /* CORREÇÃO AQUI: background fixo e cobrindo tudo */
+            background-image: url('cenariobeta.jpg');
+            background-size: 100% 100%; 
+            background-repeat: no-repeat;
             position: relative; 
             overflow: hidden; 
             border: 4px solid #000; 
@@ -20,24 +22,24 @@
 
         #personagem {
             position: absolute;
-            bottom: 20px; /* Ajustado para alinhar ao chão */
+            bottom: 25px; /* Ajuste fino para tocar o chão da imagem */
             left: 50px;
-            width: 100px;
-            z-index: 2;
+            width: 80px;  /* Ajustei um pouco o tamanho para ficar proporcional */
+            z-index: 10;
         }
 
         #ampulheta {
             position: absolute;
-            bottom: 20px; /* Ajustado para alinhar ao chão */
+            bottom: 25px; 
             right: -50px; 
-            width: 50px;
-            z-index: 1;
+            width: 40px;
+            z-index: 5;
         }
 
         .pular { animation: pulo 0.6s linear; }
-        @keyframes pulo { 0% { bottom: 20px; } 30% { bottom: 140px; } 70% { bottom: 140px; } 100% { bottom: 20px; } }
+        @keyframes pulo { 0% { bottom: 25px; } 30% { bottom: 150px; } 70% { bottom: 150px; } 100% { bottom: 25px; } }
         
-        .mover-ampulheta { animation: mover 2s infinite linear; }
+        .mover-ampulheta { animation: mover 2.5s infinite linear; }
         @keyframes mover { 0% { right: -50px; } 100% { right: 850px; } }
     </style>
 </head>
@@ -47,4 +49,63 @@
     
     <div id="jogo">
         <img id="personagem" src="jogadorbeta.png" alt="Mensageiro">
-        <img id="ampulheta" src="ampulhetabeta.png" class="mover-ampul
+        <img id="ampulheta" src="ampulhetabeta.png" class="mover-ampulheta" alt="Tempo">
+    </div>
+
+    <button onclick="iniciarJogo()" style="margin-top: 15px; padding: 10px 30px; cursor: pointer; font-size: 16px;">START</button>
+
+    <script>
+        const personagem = document.getElementById('personagem');
+        const ampulheta = document.getElementById('ampulheta');
+        const tempoDisplay = document.getElementById('tempo');
+        const pontosDisplay = document.getElementById('pontos');
+        
+        let jogoAtivo = false;
+        let segundos = 720;
+        let pontuacao = 0;
+        let cronometro, colisor;
+
+        function iniciarJogo() {
+            if (jogoAtivo) return;
+            jogoAtivo = true;
+            segundos = 720;
+            pontuacao = 0;
+            
+            cronometro = setInterval(() => {
+                segundos--;
+                let min = Math.floor(segundos / 60);
+                let seg = segundos % 60;
+                tempoDisplay.innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
+                if (segundos <= 0) {
+                    jogoAtivo = false;
+                    alert("Tempo esgotado!");
+                    location.reload();
+                }
+            }, 1000);
+
+            colisor = setInterval(() => {
+                if (!jogoAtivo) return;
+                let charRect = personagem.getBoundingClientRect();
+                let ampRect = ampulheta.getBoundingClientRect();
+
+                if (charRect.right > ampRect.left + 10 && charRect.left < ampRect.right - 10 && charRect.bottom > ampRect.top + 10) {
+                    jogoAtivo = false;
+                    alert("Game Over!");
+                    location.reload();
+                }
+            }, 50);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.code === 'Space' || e.code === 'ArrowUp') && jogoAtivo) {
+                if (!personagem.classList.contains('pular')) {
+                    personagem.classList.add('pular');
+                    pontuacao += 10;
+                    pontosDisplay.innerText = pontuacao;
+                    setTimeout(() => personagem.classList.remove('pular'), 600);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
