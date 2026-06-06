@@ -8,16 +8,21 @@
         
         #ui { color: white; font-size: 20px; margin-bottom: 10px; font-weight: bold; }
         
-        #jogo { 
-            width: 800px; 
-            height: 400px; 
-            /* Fixando o fundo para cobrir todo o espaço sem repetir */
-            background: url('cenariobeta.jpg') no-repeat center center; 
-            background-size: 100% 100%; 
-            position: relative; 
-            overflow: hidden; 
-            border: 4px solid #000; 
-        }
+       #jogo { 
+    width: 800px; 
+    height: 400px; 
+    /* Adicionamos uma cor de fundo sólida para tapar o quadriculado caso a imagem falhe */
+    background-color: #333; 
+    background-image: url('cenariobeta.jpg'); 
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    /* Usamos 'contain' se quiser ver a imagem toda sem cortar, 
+       ou 'cover' se quiser preencher o quadro todo */
+    background-size: cover; 
+    position: relative; 
+    overflow: hidden; 
+    border: 4px solid #000; 
+}
 
         #personagem {
             position: absolute;
