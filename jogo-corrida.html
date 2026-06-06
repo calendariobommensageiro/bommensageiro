@@ -8,6 +8,7 @@
         
         #ui { color: white; font-size: 20px; margin-bottom: 10px; font-weight: bold; }
         
+        /* Esta caixa é o que mantém tudo no lugar */
         #jogo { 
             width: 800px; 
             height: 400px; 
@@ -20,7 +21,7 @@
 
         #personagem {
             position: absolute;
-            bottom: 80px; /* Mantendo o alinhamento que você definiu como perfeito */
+            bottom: 80px; 
             left: 50px;
             width: 100px;
             z-index: 2;
@@ -28,7 +29,7 @@
 
         #ampulheta {
             position: absolute;
-            bottom: 80px; /* Mantendo o alinhamento que você definiu como perfeito */
+            bottom: 80px; 
             right: -50px; 
             width: 50px;
             z-index: 1;
@@ -67,32 +68,23 @@
         function iniciarJogo() {
             if (jogoAtivo) return;
             jogoAtivo = true;
-            btnStart.style.display = 'none'; // Esconde o botão
-            ampulheta.classList.add('mover-ampulheta'); // Ativa o ataque
+            btnStart.style.display = 'none';
+            ampulheta.classList.add('mover-ampulheta');
             
-            // 1. Cronômetro
             cronometro = setInterval(() => {
                 segundos--;
                 let min = Math.floor(segundos / 60);
                 let seg = segundos % 60;
                 tempoDisplay.innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
-                if (segundos <= 0) {
-                    jogoAtivo = false;
-                    alert("Tempo esgotado!");
-                    location.reload();
-                }
+                if (segundos <= 0) { jogoAtivo = false; alert("Tempo esgotado!"); location.reload(); }
             }, 1000);
 
-            // 2. Colisão (só dá dano se jogoAtivo for true)
             colisor = setInterval(() => {
                 if (!jogoAtivo) return;
                 let charRect = personagem.getBoundingClientRect();
                 let ampRect = ampulheta.getBoundingClientRect();
-
                 if (charRect.right > ampRect.left + 20 && charRect.left < ampRect.right - 20 && charRect.bottom > ampRect.top + 20) {
                     jogoAtivo = false;
-                    clearInterval(cronometro);
-                    clearInterval(colisor);
                     alert("Game Over!");
                     location.reload();
                 }
