@@ -11,10 +11,9 @@
         #jogo { 
             width: 800px; 
             height: 400px; 
-            /* CORREÇÃO AQUI: background fixo e cobrindo tudo */
-            background-image: url('cenariobeta.jpg');
+            /* Fixando o fundo para cobrir todo o espaço sem repetir */
+            background: url('cenariobeta.jpg') no-repeat center center; 
             background-size: 100% 100%; 
-            background-repeat: no-repeat;
             position: relative; 
             overflow: hidden; 
             border: 4px solid #000; 
@@ -22,24 +21,25 @@
 
         #personagem {
             position: absolute;
-            bottom: 25px; /* Ajuste fino para tocar o chão da imagem */
+            bottom: 85px; /* Ajuste fino: subindo o personagem para a estrada */
             left: 50px;
-            width: 80px;  /* Ajustei um pouco o tamanho para ficar proporcional */
+            width: 90px;
             z-index: 10;
         }
 
         #ampulheta {
             position: absolute;
-            bottom: 25px; 
+            bottom: 85px; /* Alinhado com o personagem */
             right: -50px; 
-            width: 40px;
+            width: 45px;
             z-index: 5;
+            display: none; /* Só aparece após o START */
         }
 
         .pular { animation: pulo 0.6s linear; }
-        @keyframes pulo { 0% { bottom: 25px; } 30% { bottom: 150px; } 70% { bottom: 150px; } 100% { bottom: 25px; } }
+        @keyframes pulo { 0% { bottom: 85px; } 30% { bottom: 220px; } 70% { bottom: 220px; } 100% { bottom: 85px; } }
         
-        .mover-ampulheta { animation: mover 2.5s infinite linear; }
+        .mover-ampulheta { animation: mover 2s infinite linear; }
         @keyframes mover { 0% { right: -50px; } 100% { right: 850px; } }
     </style>
 </head>
@@ -49,16 +49,17 @@
     
     <div id="jogo">
         <img id="personagem" src="jogadorbeta.png" alt="Mensageiro">
-        <img id="ampulheta" src="ampulhetabeta.png" class="mover-ampulheta" alt="Tempo">
+        <img id="ampulheta" src="ampulhetabeta.png" id="ampulheta" alt="Tempo">
     </div>
 
-    <button onclick="iniciarJogo()" style="margin-top: 15px; padding: 10px 30px; cursor: pointer; font-size: 16px;">START</button>
+    <button id="btnStart" onclick="iniciarJogo()" style="margin-top: 15px; padding: 10px 30px; cursor: pointer; font-size: 16px;">START</button>
 
     <script>
         const personagem = document.getElementById('personagem');
         const ampulheta = document.getElementById('ampulheta');
         const tempoDisplay = document.getElementById('tempo');
         const pontosDisplay = document.getElementById('pontos');
+        const btnStart = document.getElementById('btnStart');
         
         let jogoAtivo = false;
         let segundos = 720;
@@ -68,9 +69,11 @@
         function iniciarJogo() {
             if (jogoAtivo) return;
             jogoAtivo = true;
-            segundos = 720;
-            pontuacao = 0;
+            btnStart.style.display = 'none'; // Esconde o botão ao iniciar
+            ampulheta.style.display = 'block'; // Mostra a ampulheta
+            ampulheta.classList.add('mover-ampulheta');
             
+            // Inicia cronômetro
             cronometro = setInterval(() => {
                 segundos--;
                 let min = Math.floor(segundos / 60);
@@ -83,12 +86,13 @@
                 }
             }, 1000);
 
+            // Inicia colisão
             colisor = setInterval(() => {
                 if (!jogoAtivo) return;
                 let charRect = personagem.getBoundingClientRect();
                 let ampRect = ampulheta.getBoundingClientRect();
 
-                if (charRect.right > ampRect.left + 10 && charRect.left < ampRect.right - 10 && charRect.bottom > ampRect.top + 10) {
+                if (charRect.right > ampRect.left + 20 && charRect.left < ampRect.right - 20 && charRect.bottom > ampRect.top + 20) {
                     jogoAtivo = false;
                     alert("Game Over!");
                     location.reload();
