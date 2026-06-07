@@ -6,27 +6,29 @@
     <title>Bom Mensageiro: Beta 2.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: #333; font-family: 'Luckiest Guy', sans-serif; }
-        #ui { color: white; font-size: 20px; margin-bottom: 5px; }
-        #jogo { width: 100vw; height: 60vh; max-width: 800px; background: url('cenariobeta.jpg') no-repeat center center; background-size: cover; position: relative; overflow: hidden; border: 4px solid #000; }
+        body { margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: #333; font-family: 'Luckiest Guy', sans-serif; }
+        #jogo { width: 800px; height: 400px; background: url('cenariobeta.jpg') no-repeat center center; background-size: cover; position: relative; overflow: hidden; border: 4px solid #000; }
+        #ui { color: white; font-size: 24px; margin-bottom: 10px; }
         
-        #containerChefao { display: none; position: absolute; bottom: 80px; left: 30%; z-index: 50; flex-direction: column; align-items: center; }
-        #containerChefao img { background: transparent !important; border: none !important; width: 80px; }
-        #balaoFala { background: white; padding: 8px; border: 2px solid black; border-radius: 10px; font-size: 14px; text-align: center; margin-bottom: 5px; }
+        #contagemRegressiva { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; font-size: 100px; color: yellow; text-shadow: 4px 4px 0 #000; z-index: 200; }
+        #personagem { position: absolute; bottom: 70px; left: 50px; width: 100px; z-index: 2; transition: height 0.3s; }
+        #ampulheta { position: absolute; bottom: 80px; right: -50px; width: 50px; z-index: 1; }
+        
+        #containerChefao { display: none; position: absolute; bottom: 80px; left: 350px; z-index: 50; flex-direction: column; align-items: center; }
+        #containerChefao img { background: transparent !important; border: none !important; width: 120px; }
+        #balaoFala { background: white; padding: 10px; border: 3px solid black; border-radius: 15px; text-align: center; margin-bottom: 5px; }
 
-        #personagem { position: absolute; bottom: 70px; left: 50px; width: 80px; z-index: 2; transition: height 0.3s; }
-        #ampulheta { position: absolute; bottom: 80px; right: -50px; width: 40px; z-index: 1; }
-        
         .pular { animation: pulo 0.6s linear; }
         @keyframes pulo { 0% { bottom: 80px; } 30% { bottom: 200px; } 70% { bottom: 200px; } 100% { bottom: 80px; } }
         .mover-ampulheta { animation: mover 2s infinite linear; }
-        @keyframes mover { 0% { right: -50px; } 100% { right: 100%; } }
+        @keyframes mover { 0% { right: -50px; } 100% { right: 850px; } }
     </style>
 </head>
 <body>
 
     <div id="ui">Tempo: <span id="tempo">12:00</span> | Pontos: <span id="pontos">0</span></div>
     <div id="jogo">
+        <div id="contagemRegressiva">3</div>
         <img id="personagem" src="jogadorbeta.png">
         <img id="ampulheta" src="ampulhetabeta.png">
         <div id="containerChefao">
@@ -34,14 +36,14 @@
             <img src="relogiobeta.png">
         </div>
     </div>
+    <button id="btnStart" onclick="iniciarJogo()" style="margin-top: 15px; padding: 10px 30px; font-size: 20px; cursor: pointer;">START</button>
 
     <script>
-        const personagem = document.getElementById('personagem'), tempoDisplay = document.getElementById('tempo'), pontosDisplay = document.getElementById('pontos'), containerChefao = document.getElementById('containerChefao'), textoRelogio = document.getElementById('textoRelogio');
-        let jogoAtivo = true, segundos = 720, pontuacao = 0, faseChefao = 1;
-        let startY = 0;
+        const personagem = document.getElementById('personagem'), tempoDisplay = document.getElementById('tempo'), pontosDisplay = document.getElementById('pontos'), btnStart = document.getElementById('btnStart'), containerChefao = document.getElementById('containerChefao'), contagemDisplay = document.getElementById('contagemRegressiva'), ampulheta = document.getElementById('ampulheta'), textoRelogio = document.getElementById('textoRelogio');
+        let jogoAtivo = false, segundos = 720, pontuacao = 0, faseChefao = 1, startY = 0;
 
         function pular() {
-            if (!personagem.classList.contains('pular')) {
+            if (jogoAtivo && !personagem.classList.contains('pular')) {
                 personagem.classList.add('pular');
                 pontuacao += 10; pontosDisplay.innerText = pontuacao;
                 setTimeout(() => personagem.classList.remove('pular'), 600);
@@ -49,39 +51,51 @@
         }
 
         function agachar() {
-            if (faseChefao > 3) {
-                personagem.style.height = "40px";
-                setTimeout(() => personagem.style.height = "80px", 800);
+            if (jogoAtivo && faseChefao > 3) {
+                personagem.style.height = "50px";
+                setTimeout(() => personagem.style.height = "100px", 800);
             }
         }
 
-        // --- CONTROLES DE TOQUE (MOBILE) ---
+        function iniciarJogo() {
+            btnStart.style.display = 'none'; contagemDisplay.style.display = 'flex';
+            let c = 3; contagemDisplay.innerText = c;
+            let i = setInterval(() => {
+                c--; if(c>0) contagemDisplay.innerText = c; else if(c===0) contagemDisplay.innerText = "GO!";
+                else { clearInterval(i); contagemDisplay.style.display = 'none'; iniciarCronometro(); }
+            }, 1000);
+        }
+
+        function iniciarCronometro() {
+            jogoAtivo = true;
+            ampulheta.classList.add('mover-ampulheta');
+            let cronometro = setInterval(() => {
+                segundos--;
+                let min = Math.floor(segundos / 60), seg = segundos % 60;
+                tempoDisplay.innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
+                
+                if (segundos === 660 || segundos === 480 || segundos === 240) {
+                    containerChefao.style.display = 'flex';
+                    if (faseChefao === 1) textoRelogio.innerText = "O tempo é um ciclo!";
+                    else if (faseChefao === 2) textoRelogio.innerText = "Você está exausto!";
+                    else textoRelogio.innerText = "Meu mecanismo caiu!";
+                    
+                    setTimeout(() => {
+                        containerChefao.style.display = 'none';
+                        if (faseChefao === 3) alert("Botas da Agilidade ganhas! Arraste para baixo para agachar.");
+                        faseChefao++;
+                    }, 4000);
+                }
+                if (segundos <= 0) { jogoAtivo = false; clearInterval(cronometro); location.reload(); }
+            }, 1000);
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.code === 'Space') pular(); });
         document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; });
         document.addEventListener('touchend', (e) => {
             let endY = e.changedTouches[0].clientY;
-            if (endY - startY > 50) agachar(); // Arrastou para baixo
-            else pular(); // Toque simples
+            if (endY - startY > 50) agachar(); else pular();
         });
-
-        // --- LÓGICA DO JOGO ---
-        setInterval(() => {
-            segundos--;
-            let min = Math.floor(segundos / 60), seg = segundos % 60;
-            tempoDisplay.innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
-            
-            if (segundos === 660 || segundos === 480 || segundos === 240) {
-                containerChefao.style.display = 'flex';
-                if (faseChefao === 1) textoRelogio.innerText = "O tempo é um ciclo!";
-                else if (faseChefao === 2) textoRelogio.innerText = "Você está exausto!";
-                else textoRelogio.innerText = "Meu mecanismo caiu!";
-                
-                setTimeout(() => {
-                    containerChefao.style.display = 'none';
-                    if (faseChefao === 3) alert("Botas da Agilidade ganhas! Arraste para baixo para agachar.");
-                    faseChefao++;
-                }, 3000);
-            }
-        }, 1000);
     </script>
 </body>
 </html>
