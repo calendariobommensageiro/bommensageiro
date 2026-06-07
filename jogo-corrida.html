@@ -78,18 +78,33 @@
             }, 50);
         }
 
-        function ativarChefao() {
-            jogoAtivo = false; // Pausa o jogo e ampulhetas
-            ampulheta.style.display = 'none'; // Some com a ampulheta
-            containerChefao.style.display = 'flex';
-            
-            setTimeout(() => {
-                containerChefao.style.display = 'none';
-                ampulheta.style.display = 'block'; // Volta ampulheta
-                jogoAtivo = true; // Retoma o jogo
-            }, 4000);
-        }
+      function ativarChefao() {
+    jogoAtivo = false;
+    ampulheta.style.display = 'none';
+    containerChefao.style.display = 'flex';
+    
+    const textoRelogio = document.getElementById('textoRelogio');
+    
+    // Escolhe a frase pela fase
+    if (faseChefao === 1) textoRelogio.innerText = "O tempo é um ciclo, mensageiro! Você não pode escapar dele.";
+    else if (faseChefao === 2) textoRelogio.innerText = "Você ainda insiste? Seu tempo está se esgotando!";
+    else textoRelogio.innerText = "Impossível... meu mecanismo... ele está... desmoronando!";
 
+    setTimeout(() => {
+        containerChefao.style.display = 'none';
+        
+        if (faseChefao === 3) {
+            // Vitória Final
+            alert("VITÓRIA! O Relógio foi desmontado! \n\nVocê ganhou as BOTAS DA AGILIDADE! Agora você pode AGACHAR (Pressione a seta para BAIXO).");
+            // Aqui você pode adicionar um elemento visual das botas na tela
+            jogoAtivo = true; 
+        } else {
+            faseChefao++;
+            ampulheta.style.display = 'block';
+            jogoAtivo = true;
+        }
+    }, 4000);
+}
         function iniciarJogo() {
             btnStart.style.display = 'none'; contagemDisplay.style.display = 'flex';
             let c = 3; contagemDisplay.innerText = c;
