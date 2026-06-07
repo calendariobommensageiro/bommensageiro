@@ -48,20 +48,13 @@
 
     <script>
         const personagem = document.getElementById('personagem'), tempoDisplay = document.getElementById('tempo'), pontosDisplay = document.getElementById('pontos'), btnStart = document.getElementById('btnStart'), containerChefao = document.getElementById('containerChefao'), contagemDisplay = document.getElementById('contagemRegressiva'), ampulheta = document.getElementById('ampulheta'), textoRelogio = document.getElementById('textoRelogio');
-        let jogoAtivo = false, segundos = 720, pontuacao = 0, faseChefao = 1, startY = 0;
+        let jogoAtivo = false, segundos = 720, pontuacao = 0, faseChefao = 1;
 
         function pular() {
             if (jogoAtivo && !personagem.classList.contains('pular')) {
                 personagem.classList.add('pular');
                 pontuacao += 10; pontosDisplay.innerText = pontuacao;
                 setTimeout(() => personagem.classList.remove('pular'), 600);
-            }
-        }
-
-        function agachar() {
-            if (jogoAtivo && faseChefao > 3) {
-                personagem.style.height = "50px";
-                setTimeout(() => personagem.style.height = "100px", 800);
             }
         }
 
@@ -82,38 +75,38 @@
                 let min = Math.floor(segundos / 60), seg = segundos % 60;
                 tempoDisplay.innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
                 
-                // Gatilhos nas falas corretas
+                // Gatilhos do Chefe (11min, 8min, 4min)
                 if (segundos === 660 || segundos === 480 || segundos === 240) {
                     containerChefao.style.display = 'flex';
-                    if (faseChefao === 1) textoRelogio.innerText = "O tempo é um ciclo, mensageiro! Você não pode escapar dele.";
-                    else if (faseChefao === 2) textoRelogio.innerText = "Você ainda insiste? Seu tempo está se esgotando!";
-                    else textoRelogio.innerText = "Impossível... meu mecanismo... ele está... desmoronando!";
+                    textoRelogio.innerText = (faseChefao === 3) ? "Meu mecanismo está falhando!" : "Tente pular por cima!";
                     
-                    setTimeout(() => {
-                        containerChefao.style.display = 'none';
-                        if (faseChefao === 3) alert("VITÓRIA! O Relógio foi desmontado! Você ganhou as BOTAS DA AGILIDADE!");
-                        faseChefao++;
-                    }, 4000);
+                    let checagemConfronto = setInterval(() => {
+                        let p = personagem.getBoundingClientRect(), c = containerChefao.getBoundingClientRect();
+                        // Lógica de pulo por cima (vitória)
+                        if (p.bottom < c.top + 50 && p.right > c.left && p.left < c.right) {
+                            clearInterval(checagemConfronto);
+                            containerChefao.style.display = 'none';
+                            if (faseChefao === 3) alert("RELÓGIO DESMONTADO! Ganhou as BOTAS!");
+                            faseChefao++;
+                        }
+                    }, 50);
+                    setTimeout(() => { clearInterval(checagemConfronto); containerChefao.style.display = 'none'; }, 4000);
                 }
 
                 if (segundos <= 0) { jogoAtivo = false; clearInterval(cronometro); document.getElementById('gameOverScreen').style.display = 'flex'; }
             }, 1000);
         }
 
-        // Colisão (Mantida do original)
+        // Colisão com as Ampulhetas (O coração do jogo)
         setInterval(() => {
             if (!jogoAtivo) return;
             let charRect = personagem.getBoundingClientRect(), ampRect = ampulheta.getBoundingClientRect();
             if (charRect.right > ampRect.left + 20 && charRect.left < ampRect.right - 20 && charRect.bottom > ampRect.top + 20) {
-                jogoAtivo = false; document.getElementById('gameOverScreen').style.display = 'flex';
+                jogoAtivo = false; clearInterval(document.getElementById('cronometro')); document.getElementById('gameOverScreen').style.display = 'flex';
             }
         }, 50);
 
-        document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; });
-        document.addEventListener('touchend', (e) => {
-            let endY = e.changedTouches[0].clientY;
-            if (endY - startY > 50) agachar(); else pular();
-        });
+        document.addEventListener('touchstart', pular);
         document.addEventListener('keydown', (e) => { if (e.code === 'Space') pular(); });
     </script>
 </body>
