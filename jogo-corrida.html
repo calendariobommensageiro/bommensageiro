@@ -65,10 +65,31 @@
         let pontuacao = 0;
         let cronometro, colisor;
 
-        function iniciarJogo() {
+   function iniciarJogo() {
             if (jogoAtivo) return;
-            jogoAtivo = true;
+            
+            // 1. Esconde o botão e prepara o display
             btnStart.style.display = 'none';
+            tempoDisplay.innerText = "3"; // Mostra o início da contagem
+
+            let contagem = 3;
+            let contagemInterval = setInterval(() => {
+                contagem--;
+                if (contagem > 0) {
+                    tempoDisplay.innerText = contagem;
+                } else if (contagem === 0) {
+                    tempoDisplay.innerText = "GO!";
+                } else {
+                    // 2. Aqui a contagem acabou, iniciamos o jogo de verdade
+                    clearInterval(contagemInterval);
+                    iniciarCronometroJogo();
+                }
+            }, 1000);
+        }
+
+        // Nova função que apenas inicia o cronômetro do jogo após o "GO!"
+        function iniciarCronometroJogo() {
+            jogoAtivo = true;
             ampulheta.classList.add('mover-ampulheta');
             
             cronometro = setInterval(() => {
@@ -76,18 +97,28 @@
                 let min = Math.floor(segundos / 60);
                 let seg = segundos % 60;
                 tempoDisplay.innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
-                if (segundos <= 0) { jogoAtivo = false; alert("Tempo esgotado!"); location.reload(); }
+                
+                if (segundos <= 0) {
+                    jogoAtivo = false;
+                    clearInterval(cronometro);
+                    alert("Tempo esgotado!");
+                    location.reload();
+                }
             }, 1000);
 
+            // Inicia a colisão
             colisor = setInterval(() => {
                 if (!jogoAtivo) return;
                 let charRect = personagem.getBoundingClientRect();
                 let ampRect = ampulheta.getBoundingClientRect();
-                if (charRect.right > ampRect.left + 20 && charRect.left < ampRect.right - 20 && charRect.bottom > ampRect.top + 20) {
-                    jogoAtivo = false;
-                    alert("Game Over!");
-                    location.reload();
-                }
+               if (charRect.right > ampRect.left + 20 && charRect.left < ampRect.right - 20 && charRect.bottom > ampRect.top + 20) {
+    jogoAtivo = false;
+    clearInterval(cronometro);
+    clearInterval(colisor);
+    
+    // Mostra a tela de Game Over
+    document.getElementById('gameOverScreen').style.display = 'flex';
+}
             }, 50);
         }
 
