@@ -1,99 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
     <style>
-        #jogo { position: relative; width: 800px; height: 400px; overflow: hidden; background: #f0f0f0; border: 2px solid #000; }
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #333; }
         
-        /* Animação de entrada do Relógio */
-        @keyframes puloVilao {
-            0% { left: -200px; }
-            50% { left: 350px; }
-            100% { left: 900px; }
+        #jogo { 
+            position: relative; width: 800px; height: 400px; 
+            background: #e0e0e0; border: 4px solid #000; overflow: hidden; 
         }
-        .animar-vilao { animation: puloVilao 4s ease-in-out forwards; }
-        
-        /* Balão de Fala */
+
+        /* Container do Vilão - Centralizado */
+        #containerChefao { 
+            position: absolute; top: 80px; left: -300px; /* Fora da tela inicialmente */
+            display: flex; flex-direction: column; align-items: center; z-index: 100;
+        }
+
+        /* Balão de fala estilo HQ */
         #balaoFala { 
-            position: absolute; top: -60px; left: 0; background: white; 
-            padding: 10px; border: 3px solid black; border-radius: 15px; 
-            font-family: sans-serif; z-index: 101; 
+            background: white; padding: 15px; border: 3px solid #000; 
+            border-radius: 20px; font-family: 'Arial', sans-serif; 
+            font-weight: bold; margin-bottom: 10px; text-align: center;
+        }
+
+        /* Animação de entrada */
+        .animar-vilao { animation: entrarTela 6s forwards; }
+        @keyframes entrarTela {
+            0% { left: -300px; }
+            40% { left: 300px; } /* Para no centro */
+            80% { left: 300px; } /* Pausa para falar */
+            100% { left: 900px; } /* Sai da tela */
         }
     </style>
 </head>
 <body>
 
 <div id="jogo">
-    <div id="containerChefao" style="display: none; position: absolute; top: 150px; z-index: 100;">
-        <img id="imgRelogio" src="relogiobeta.png" style="width: 150px;">
-        <div id="balaoFala">
-            <span id="textoRelogio"></span>
-        </div>
+    <!-- Relógio Beta e Fala -->
+    <div id="containerChefao">
+        <div id="balaoFala"><span id="textoRelogio"></span></div>
+        <img src="relogiobeta.png" style="width: 150px;">
     </div>
 </div>
 
 <script>
-    let jogoAtivo = true;
-    let segundosPassados = 0;
-    let integridadeRelogio = 3; // 3: Completo, 2: 1 badalo, 1: 0 badalos, 0: Desmontado
+    let integridadeRelogio = 3;
+    const container = document.getElementById('containerChefao');
+    const texto = document.getElementById('textoRelogio');
 
-    // Padrão de ondas: 1, 1, 2, 1, 1, 2...
-    const padraoOndas = [1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2];
-    let indiceOnda = 0;
+    function acionarVilao() {
+        // Define a fala baseada na vida
+        if (integridadeRelogio === 3) texto.innerText = "Tic-Tac! O tempo é meu!";
+        else if (integridadeRelogio === 2) texto.innerText = "Um badalo a menos!";
+        else texto.innerText = "A sua era termina aqui!";
 
-    function lançarAmpulhetas() {
-        if (!jogoAtivo) return;
-        let quantidade = padraoOndas[indiceOnda];
-        for(let i = 0; i < quantidade; i++) {
-            let amp = document.createElement('img');
-            amp.src = 'ampulhetabeta.png';
-            amp.className = 'ampulheta-ativa';
-            amp.style.position = 'absolute'; amp.style.bottom = '80px';
-            amp.style.right = (i * 150) + 'px'; amp.style.width = '50px';
-            document.getElementById('jogo').appendChild(amp);
-            setTimeout(() => amp.remove(), 2000);
-        }
-        indiceOnda = (indiceOnda + 1) % padraoOndas.length;
-    }
-
-    function iniciarSequenciaChefao() {
-        jogoAtivo = false;
-        document.querySelectorAll('.ampulheta-ativa').forEach(a => a.remove());
-
-        const container = document.getElementById('containerChefao');
-        const texto = document.getElementById('textoRelogio');
-        
-        // Define texto e estado
-        if (integridadeRelogio === 3) texto.innerText = "O tempo é meu, mensageiro!";
-        else if (integridadeRelogio === 2) texto.innerText = "Perdeu um badalo!";
-        else if (integridadeRelogio === 1) texto.innerText = "Já era...!";
-
-        container.style.display = 'block';
         container.classList.add('animar-vilao');
-        
+
+        // Após a animação, reseta
         setTimeout(() => {
-            container.style.display = 'none';
             container.classList.remove('animar-vilao');
             integridadeRelogio--;
-            
-            if (integridadeRelogio === 0) {
-                alert("Vitória! O Relógio se desmontou! Você ganhou as BOTAS!");
-            } else {
-                jogoAtivo = true;
-            }
-        }, 4000);
+            if (integridadeRelogio === 0) alert("Relógio desmontado! Pegue as BOTAS!");
+        }, 6000);
     }
 
-    // Cronômetro principal
-    setInterval(() => {
-        if (!jogoAtivo) return;
-        segundosPassados++;
-        // Gatilhos: 240s (4min), 480s (8min), 660s (11min)
-        if (segundosPassados === 240 || segundosPassados === 480 || segundosPassados === 660) {
-            iniciarSequenciaChefao();
-        }
-    }, 1000);
-
-    setInterval(lançarAmpulhetas, 2500);
+    // Gatilho para teste: clica na tela para chamar o vilão
+    document.getElementById('jogo').addEventListener('click', acionarVilao);
 </script>
 </body>
 </html>
