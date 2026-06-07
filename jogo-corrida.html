@@ -1,32 +1,21 @@
 <!DOCTYPE html>
-<html lang="pt-pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bom Mensageiro: Versão Final</title>
+    <title>Bom Mensageiro: Jogo Completo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; background: #222; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: sans-serif; }
-       #jogo { 
-    width: 95vw; 
-    height: 60vh; 
-    max-width: 800px; 
-    /* Adicionando o seu cenário de volta com as propriedades corretas */
-    background: url('cenariobeta.jpg') no-repeat center center; 
-    background-size: cover; 
-    position: relative; 
-    overflow: hidden; 
-    border: 4px solid #000; 
-}
+        body { margin: 0; background: #222; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: 'Luckiest Guy', cursive; }
+        #jogo { width: 95vw; height: 60vh; max-width: 800px; background: url('cenariobeta.jpg') no-repeat center center; background-size: cover; position: relative; overflow: hidden; border: 4px solid #000; }
         #personagem { position: absolute; bottom: 10%; left: 5%; width: 10%; z-index: 2; transition: bottom 0.1s; }
         .ampulheta { position: absolute; bottom: 10%; width: 8%; z-index: 1; }
-        
-        #chefe { position: absolute; bottom: 10%; right: 5%; width: 12%; display: none; }
-        #balao { position: absolute; top: 10%; right: 5%; background: white; padding: 10px; border: 2px solid black; display: none; }
-
+        #chefe { position: absolute; bottom: 10%; right: 5%; width: 12%; display: none; z-index: 3; }
+        #balao { position: absolute; top: 15%; right: 5%; background: white; padding: 15px; border: 3px solid black; border-radius: 10px; display: none; z-index: 4; font-size: 1.2rem; }
+        #gameOver { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); color: white; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 10; }
+        #btnStart, #btnRestart { padding: 15px 30px; font-size: 2rem; cursor: pointer; font-family: 'Luckiest Guy', cursive; z-index: 5; }
         .pulo { animation: puloAnim 0.6s linear; }
         @keyframes puloAnim { 0% { bottom: 10%; } 40% { bottom: 40%; } 100% { bottom: 10%; } }
-        
-        #btnStart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; font-size: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -35,51 +24,46 @@
         <img id="personagem" src="jogadorbeta.png" alt="Jogador">
         <div id="balao">Como se atreve me enfrentar? Vai se arrepender!</div>
         <img id="chefe" src="relogiobeta.png" alt="Relógio">
+        <div id="gameOver"><h1>GAME OVER</h1><button id="btnRestart" onclick="location.reload()">TENTAR NOVAMENTE</button></div>
         <button id="btnStart">START</button>
     </div>
 
     <script>
-        const jogo = document.getElementById('jogo'), p = document.getElementById('personagem'), btn = document.getElementById('btnStart'), chefe = document.getElementById('chefe'), balao = document.getElementById('balao');
-        let jogoAtivo = false, tempo = 720;
+        const jogo = document.getElementById('jogo'), p = document.getElementById('personagem'), btn = document.getElementById('btnStart'), chefe = document.getElementById('chefe'), balao = document.getElementById('balao'), go = document.getElementById('gameOver');
+        let jogoAtivo = false, segundosJogados = 0;
 
-        // Início com Fala do Relógio
         btn.onclick = () => {
-            if(btn.innerText === "START") {
-                chefe.style.display = 'block'; balao.style.display = 'block';
-                btn.innerText = "COMEÇAR!";
-            } else {
-                chefe.style.display = 'none'; balao.style.display = 'none';
-                btn.style.display = 'none'; iniciarJogo();
-            }
+            if(btn.innerText === "START") { chefe.style.display = 'block'; balao.style.display = 'block'; btn.innerText = "COMEÇAR!"; }
+            else { chefe.style.display = 'none'; balao.style.display = 'none'; btn.style.display = 'none'; iniciarJogo(); }
         };
 
         function iniciarJogo() {
             jogoAtivo = true;
             gerarObstaculos();
-            // Lógica de tempo e gatilhos (11min=60s, 8min=240s, 4min=480s)
-            setInterval(() => { if(jogoAtivo) tempo--; }, 1000);
+            setInterval(() => { if(jogoAtivo) { segundosJogados++; verificarConfronto(); } }, 1000);
+        }
+
+        function verificarConfronto() {
+            if (segundosJogados === 240 || segundosJogados === 480 || segundosJogados === 660) {
+                jogoAtivo = false;
+                chefe.style.display = 'block';
+                balao.innerText = "Tente pular por cima de mim!";
+                balao.style.display = 'block';
+                setTimeout(() => { 
+                    chefe.style.display = 'none'; balao.style.display = 'none'; jogoAtivo = true; 
+                }, 5000);
+            }
         }
 
         function pular() {
-            if(!p.classList.contains('pulo')) {
+            if(!p.classList.contains('pulo') && jogoAtivo) {
                 p.classList.add('pulo');
                 setTimeout(() => p.classList.remove('pulo'), 600);
             }
         }
 
-        // Sistema de Obstáculos (Sequência Dino)
-        const padrao = ['S', 'S', 'S', 'D', 'S', 'D', 'D', 'S'];
-        let indice = 0;
-
         function gerarObstaculos() {
             if(!jogoAtivo) return;
-            let tipo = padrao[indice];
-            criarAmpulheta(tipo);
-            indice = (indice + 1) % padrao.length;
-            setTimeout(gerarObstaculos, 1500); // Ritmo constante
-        }
-
-        function criarAmpulheta(tipo) {
             let amp = document.createElement('img');
             amp.src = 'ampulhetabeta.png';
             amp.className = 'ampulheta';
@@ -88,14 +72,13 @@
             
             let pos = 100;
             let move = setInterval(() => {
-                pos -= 1;
+                if(!jogoAtivo) { clearInterval(move); return; }
+                pos -= 0.8;
                 amp.style.left = pos + '%';
+                if(pos < 12 && pos > 2 && !p.classList.contains('pulo')) { jogoAtivo = false; go.style.display = 'flex'; clearInterval(move); }
                 if(pos < -10) { clearInterval(move); amp.remove(); }
-                // Colisão simples
-                if(pos < 10 && pos > 2 && !p.classList.contains('pulo')) {
-                    jogoAtivo = false; alert("Game Over!"); location.reload();
-                }
             }, 20);
+            setTimeout(gerarObstaculos, 1600);
         }
 
         document.addEventListener('touchstart', pular);
