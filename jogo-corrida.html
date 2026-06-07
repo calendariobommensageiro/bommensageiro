@@ -6,21 +6,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: #333; font-family: 'Luckiest Guy', sans-serif; }
-        #ui { color: white; font-size: 24px; margin-bottom: 10px; }
         #jogo { width: 800px; height: 400px; background: url('cenariobeta.jpg') no-repeat center center; background-size: cover; position: relative; overflow: hidden; border: 4px solid #000; }
-
-        /* Relógio e Transparência Forçada */
+        
+        /* Container do Chefão Corrigido */
         #containerChefao { 
             display: none; position: absolute; bottom: 80px; left: 350px; z-index: 50; 
-            flex-direction: column; align-items: center; 
+            flex-direction: column; align-items: center;
         }
-        #containerChefao img { background: transparent !important; }
-        #balaoFala { background: white; padding: 10px; border: 3px solid black; border-radius: 15px; font-family: 'Luckiest Guy', cursive; text-align: center; margin-bottom: 10px; }
-
-        #contagemRegressiva { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; font-size: 100px; color: yellow; text-shadow: 4px 4px 0 #000; z-index: 200; }
+        #containerChefao img { background: transparent !important; border: none !important; }
+        #balaoFala { background: white; padding: 10px; border: 3px solid black; border-radius: 15px; text-align: center; margin-bottom: 5px; }
+        
         #personagem { position: absolute; bottom: 70px; left: 50px; width: 100px; z-index: 2; }
         #ampulheta { position: absolute; bottom: 80px; right: -50px; width: 50px; z-index: 1; }
-        
         .pular { animation: pulo 0.6s linear; }
         @keyframes pulo { 0% { bottom: 80px; } 30% { bottom: 200px; } 70% { bottom: 200px; } 100% { bottom: 80px; } }
         .mover-ampulheta { animation: mover 2s infinite linear; }
@@ -29,100 +26,46 @@
 </head>
 <body>
 
-    <div id="ui">Tempo: <span id="tempo">12:00</span> | Pontos: <span id="pontos">0</span></div>
-    
     <div id="jogo">
-        <div id="contagemRegressiva">3</div>
-        <img id="personagem" src="jogadorbeta.png" alt="Mensageiro">
-        <img id="ampulheta" src="ampulhetabeta.png" alt="Tempo">
+        <img id="personagem" src="jogadorbeta.png">
+        <img id="ampulheta" src="ampulhetabeta.png">
         
         <div id="containerChefao">
-            <div id="balaoFala"><span id="textoRelogio">Tic-Tac!</span></div>
+            <div id="balaoFala"><span id="textoRelogio"></span></div>
             <img src="relogiobeta.png" style="width: 120px;">
-        </div>
-        
-        <div id="gameOverScreen" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); color: white; flex-direction: column; justify-content: center; align-items: center; z-index: 100;">
-            <h1 style="margin: 0; font-size: 80px; font-family: 'Luckiest Guy';">GAME OVER</h1>
-            <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; cursor: pointer; font-size: 20px; font-family: 'Luckiest Guy';">Tentar Novamente</button>
         </div>
     </div>
 
-    <button id="btnStart" onclick="iniciarJogo()" style="margin-top: 15px; padding: 10px 30px; cursor: pointer; font-size: 20px; font-family: 'Luckiest Guy';">START</button>
-
     <script>
-        const personagem = document.getElementById('personagem'), ampulheta = document.getElementById('ampulheta'), tempoDisplay = document.getElementById('tempo'), pontosDisplay = document.getElementById('pontos'), btnStart = document.getElementById('btnStart'), containerChefao = document.getElementById('containerChefao'), contagemDisplay = document.getElementById('contagemRegressiva');
-        let jogoAtivo = false, segundos = 720, pontuacao = 0, cronometro, colisor;
+        let faseChefao = 1;
+        let jogoAtivo = false;
+        const containerChefao = document.getElementById('containerChefao');
+        const textoRelogio = document.getElementById('textoRelogio');
 
-        function iniciarCronometroJogo() {
-            jogoAtivo = true;
-            ampulheta.classList.add('mover-ampulheta');
-            cronometro = setInterval(() => {
-                segundos--;
-                let min = Math.floor(segundos / 60), seg = segundos % 60;
-                tempoDisplay.innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
-                
-                // --- LÓGICA DO RELÓGIO (3 Momentos: 11, 8, 4 min restantes) ---
-                if (segundos === 660 || segundos === 480 || segundos === 240) {
-                    ativarChefao();
+        function ativarChefao() {
+            containerChefao.style.display = 'flex';
+            
+            // Frases dinâmicas
+            if (faseChefao === 1) textoRelogio.innerText = "O tempo é um ciclo!";
+            else if (faseChefao === 2) textoRelogio.innerText = "Você está exausto!";
+            else textoRelogio.innerText = "Meu mecanismo caiu!";
+
+            // O chefão aparece por 4 segundos e vai embora sem parar o jogo
+            setTimeout(() => {
+                containerChefao.style.display = 'none';
+                if (faseChefao === 3) {
+                    alert("Você ganhou as BOTAS! Pressione SETA PARA BAIXO para agachar.");
                 }
-
-                if (segundos <= 0) { jogoAtivo = false; clearInterval(cronometro); alert("Tempo esgotado!"); location.reload(); }
-            }, 1000);
-
-            colisor = setInterval(() => {
-                if (!jogoAtivo) return;
-                let charRect = personagem.getBoundingClientRect(), ampRect = ampulheta.getBoundingClientRect();
-                if (charRect.right > ampRect.left + 20 && charRect.left < ampRect.right - 20 && charRect.bottom > ampRect.top + 20) {
-                    jogoAtivo = false; clearInterval(cronometro); clearInterval(colisor); document.getElementById('gameOverScreen').style.display = 'flex';
-                }
-            }, 50);
+                faseChefao++;
+            }, 4000);
         }
 
-      function ativarChefao() {
-    jogoAtivo = false;
-    ampulheta.style.display = 'none';
-    containerChefao.style.display = 'flex';
-    
-    const textoRelogio = document.getElementById('textoRelogio');
-    
-    // Escolhe a frase pela fase
-    if (faseChefao === 1) textoRelogio.innerText = "O tempo é um ciclo, mensageiro! Você não pode escapar dele.";
-    else if (faseChefao === 2) textoRelogio.innerText = "Você ainda insiste? Seu tempo está se esgotando!";
-    else textoRelogio.innerText = "Impossível... meu mecanismo... ele está... desmoronando!";
-
-    setTimeout(() => {
-        containerChefao.style.display = 'none';
-        
-        if (faseChefao === 3) {
-            // Vitória Final
-            alert("VITÓRIA! O Relógio foi desmontado! \n\nVocê ganhou as BOTAS DA AGILIDADE! Agora você pode AGACHAR (Pressione a seta para BAIXO).");
-            // Aqui você pode adicionar um elemento visual das botas na tela
-            jogoAtivo = true; 
-        } else {
-            faseChefao++;
-            ampulheta.style.display = 'block';
-            jogoAtivo = true;
+        // --- GATILHOS DE TEMPO ---
+        // Exemplo: se segundos forem 660, 480 ou 240, chama o chefão
+        // (Certifique-se de que isso esteja dentro do seu setInterval de tempo)
+        if (segundos === 660 || segundos === 480 || segundos === 240) {
+            ativarChefao();
         }
-    }, 4000);
-}
-        function iniciarJogo() {
-            btnStart.style.display = 'none'; contagemDisplay.style.display = 'flex';
-            let c = 3; contagemDisplay.innerText = c;
-            let i = setInterval(() => {
-                c--; if(c>0) contagemDisplay.innerText = c; else if(c===0) contagemDisplay.innerText = "GO!";
-                else { clearInterval(i); contagemDisplay.style.display = 'none'; iniciarCronometroJogo(); }
-            }, 1000);
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if ((e.code === 'Space' || e.code === 'ArrowUp') && jogoAtivo) {
-                if (!personagem.classList.contains('pular')) {
-                    personagem.classList.add('pular');
-                    pontuacao += 10; pontosDisplay.innerText = pontuacao;
-                    setTimeout(() => personagem.classList.remove('pular'), 600);
-                }
-            }
-        });
     </script>
 </body>
 </html>
