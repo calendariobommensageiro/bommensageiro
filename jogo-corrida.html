@@ -2,42 +2,26 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Bom Mensageiro: Beta 2.0</title>
+    <title>Bom Mensageiro: Beta Final</title>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: #333; font-family: sans-serif; }
         
         #ui { color: white; font-size: 20px; margin-bottom: 10px; font-weight: bold; }
         
-        /* Esta caixa é o que mantém tudo no lugar */
         #jogo { 
-            width: 800px; 
-            height: 400px; 
+            width: 800px; height: 400px; 
             background: url('cenariobeta.jpg') no-repeat center center; 
             background-size: cover; 
-            position: relative; 
-            overflow: hidden; 
-            border: 4px solid #000; 
+            position: relative; overflow: hidden; border: 4px solid #000; 
         }
 
-        #personagem {
-            position: absolute;
-            bottom: 70px; 
-            left: 50px;
-            width: 100px;
-            z-index: 2;
-        }
+        #personagem { position: absolute; bottom: 70px; left: 50px; width: 100px; z-index: 2; }
+        #ampulheta { position: absolute; bottom: 80px; right: -50px; width: 50px; z-index: 1; }
 
-        #ampulheta {
-            position: absolute;
-            bottom: 80px; 
-            right: -50px; 
-            width: 50px;
-            z-index: 1;
-        }
-
+        .tela-jogo { font-family: 'Luckiest Guy', cursive; text-shadow: 3px 3px 0 #000; }
         .pular { animation: pulo 0.6s linear; }
-        @keyframes pulo { 0% { bottom: 80px; } 30% { bottom: 200px; } 70% { bottom: 200px; } 100% { bottom: 80px; } }
-        
+        @keyframes pulo { 0% { bottom: 70px; } 50% { bottom: 200px; } 100% { bottom: 70px; } }
         .mover-ampulheta { animation: mover 2s infinite linear; }
         @keyframes mover { 0% { right: -50px; } 100% { right: 850px; } }
     </style>
@@ -46,13 +30,17 @@
 
     <div id="ui">Tempo: <span id="tempo">12:00</span> | Pontos: <span id="pontos">0</span></div>
     
-<div id="jogo">
+    <div id="jogo">
         <img id="personagem" src="jogadorbeta.png" alt="Mensageiro">
         <img id="ampulheta" src="ampulhetabeta.png" alt="Tempo">
         
-        <div id="gameOverScreen" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); color: white; flex-direction: column; justify-content: center; align-items: center; z-index: 100;">
-            <h1 style="margin: 0;">GAME OVER</h1>
-            <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; cursor: pointer; font-size: 16px;">Tentar Novamente</button>
+        <div id="countDownScreen" class="tela-jogo" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); color: #FFD700; display: none; justify-content: center; align-items: center; z-index: 99; font-size: 100px;">
+            <span id="countText">3</span>
+        </div>
+
+        <div id="gameOverScreen" class="tela-jogo" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 0, 0, 0.8); color: white; flex-direction: column; justify-content: center; align-items: center; z-index: 100; font-size: 50px;">
+            <h1>GAME OVER!</h1>
+            <button onclick="location.reload()" style="font-family: 'Luckiest Guy', cursive; padding: 15px 30px; cursor: pointer; font-size: 24px; background: #FFD700; border: none; border-radius: 10px;">TENTAR DE NOVO</button>
         </div>
     </div>
 
@@ -64,77 +52,62 @@
         const tempoDisplay = document.getElementById('tempo');
         const pontosDisplay = document.getElementById('pontos');
         const btnStart = document.getElementById('btnStart');
+        const countScreen = document.getElementById('countDownScreen');
+        const countText = document.getElementById('countText');
         
         let jogoAtivo = false;
         let segundos = 720;
         let pontuacao = 0;
         let cronometro, colisor;
 
-   function iniciarJogo() {
+        function iniciarJogo() {
             if (jogoAtivo) return;
-            
-            // 1. Esconde o botão e prepara o display
             btnStart.style.display = 'none';
-            tempoDisplay.innerText = "3"; // Mostra o início da contagem
-
+            countScreen.style.display = 'flex';
             let contagem = 3;
-            let contagemInterval = setInterval(() => {
+            let interval = setInterval(() => {
                 contagem--;
-                if (contagem > 0) {
-                    tempoDisplay.innerText = contagem;
-                } else if (contagem === 0) {
-                    tempoDisplay.innerText = "GO!";
-                } else {
-                    // 2. Aqui a contagem acabou, iniciamos o jogo de verdade
-                    clearInterval(contagemInterval);
+                if (contagem > 0) countText.innerText = contagem;
+                else if (contagem === 0) countText.innerText = "GO!";
+                else {
+                    clearInterval(interval);
+                    countScreen.style.display = 'none';
                     iniciarCronometroJogo();
                 }
             }, 1000);
         }
 
-        // Nova função que apenas inicia o cronômetro do jogo após o "GO!"
         function iniciarCronometroJogo() {
             jogoAtivo = true;
             ampulheta.classList.add('mover-ampulheta');
-            
             cronometro = setInterval(() => {
                 segundos--;
-                let min = Math.floor(segundos / 60);
-                let seg = segundos % 60;
-                tempoDisplay.innerText = `${min}:${seg < 10 ? '0'+seg : seg}`;
-                
-                if (segundos <= 0) {
-                    jogoAtivo = false;
-                    clearInterval(cronometro);
-                    alert("Tempo esgotado!");
-                    location.reload();
-                }
+                let m = Math.floor(segundos / 60);
+                let s = segundos % 60;
+                tempoDisplay.innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                if (segundos <= 0) location.reload();
             }, 1000);
 
-            // Inicia a colisão
             colisor = setInterval(() => {
                 if (!jogoAtivo) return;
-                let charRect = personagem.getBoundingClientRect();
-                let ampRect = ampulheta.getBoundingClientRect();
-               if (charRect.right > ampRect.left + 20 && charRect.left < ampRect.right - 20 && charRect.bottom > ampRect.top + 20) {
-    jogoAtivo = false;
-    clearInterval(cronometro);
-    clearInterval(colisor);
-    
-    // Mostra a tela de Game Over
-    document.getElementById('gameOverScreen').style.display = 'flex';
-}
+                let c = personagem.getBoundingClientRect();
+                let a = ampulheta.getBoundingClientRect();
+                if (c.right > a.left + 20 && c.left < a.right - 20 && c.bottom > a.top + 20) {
+                    jogoAtivo = false;
+                    clearInterval(cronometro);
+                    clearInterval(colisor);
+                    ampulheta.style.animationPlayState = 'paused';
+                    document.getElementById('gameOverScreen').style.display = 'flex';
+                }
             }, 50);
         }
 
         document.addEventListener('keydown', (e) => {
-            if ((e.code === 'Space' || e.code === 'ArrowUp') && jogoAtivo) {
-                if (!personagem.classList.contains('pular')) {
-                    personagem.classList.add('pular');
-                    pontuacao += 10;
-                    pontosDisplay.innerText = pontuacao;
-                    setTimeout(() => personagem.classList.remove('pular'), 600);
-                }
+            if ((e.code === 'Space' || e.code === 'ArrowUp') && jogoAtivo && !personagem.classList.contains('pular')) {
+                personagem.classList.add('pular');
+                pontuacao += 10;
+                pontosDisplay.innerText = pontuacao;
+                setTimeout(() => personagem.classList.remove('pular'), 600);
             }
         });
     </script>
