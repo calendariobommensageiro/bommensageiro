@@ -6,8 +6,17 @@
     <title>Bom Mensageiro: Versão Final</title>
     <style>
         body { margin: 0; background: #222; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: sans-serif; }
-        #jogo { width: 95vw; height: 60vh; max-width: 800px; background: #ddd; position: relative; overflow: hidden; border: 4px solid #000; }
-        
+       #jogo { 
+    width: 95vw; 
+    height: 60vh; 
+    max-width: 800px; 
+    /* Adicionando o seu cenário de volta com as propriedades corretas */
+    background: url('cenariobeta.jpg') no-repeat center center; 
+    background-size: cover; 
+    position: relative; 
+    overflow: hidden; 
+    border: 4px solid #000; 
+}
         #personagem { position: absolute; bottom: 10%; left: 5%; width: 10%; z-index: 2; transition: bottom 0.1s; }
         .ampulheta { position: absolute; bottom: 10%; width: 8%; z-index: 1; }
         
