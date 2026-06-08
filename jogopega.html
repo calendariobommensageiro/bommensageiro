@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Jogo Pega</title>
+    <style>
+        body { margin: 0; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; }
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: url('cenariobeta.jpg') no-repeat center bottom;
+            background-size: cover;
+        }
+        #jogador {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            width: 120px;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .item {
+            position: absolute;
+            width: 60px;
+            top: -100px;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <img id="jogador" src="jogadorpega.png" alt="Jogador">
+</div>
+
+<script>
+    const container = document.getElementById('game-container');
+    const jogador = document.getElementById('jogador');
+    
+    window.addEventListener('mousemove', (e) => {
+        let pos = (e.clientX / window.innerWidth) * 100;
+        jogador.style.left = pos + '%';
+    });
+
+    function criarItem() {
+        const p = document.createElement('img');
+        p.src = 'pergaminhopega.png';
+        p.className = 'item';
+        p.style.left = Math.random() * 90 + '%';
+        container.appendChild(p);
+
+        let top = -100;
+        const cair = setInterval(() => {
+            top += 5;
+            p.style.top = top + 'px';
+            if (top > window.innerHeight) {
+                clearInterval(cair);
+                p.remove();
+            }
+        }, 20);
+    }
+
+    setInterval(criarItem, 2000);
+</script>
+</body>
+</html>
