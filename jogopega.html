@@ -13,12 +13,14 @@
             background: #ccc url('cenariopega.png') no-repeat center bottom; 
             background-size: cover; 
         }
-       #jogador { 
+      #jogador { 
     position: absolute; 
-    bottom: 20px; 
+    bottom: 5%; /* Ajustado para ficar proporcional ao fundo */
     left: 50%; 
-    width: 200px; /* Aumentei de 100px para 200px */
+    width: 280px; /* Aumentado para 280px */
     transition: left 0.1s; 
+    z-index: 10;
+}
 }
         .item { position: absolute; width: 50px; }
         #placar { position: absolute; top: 10px; left: 10px; color: black; font-size: 24px; font-weight: bold; background: rgba(255,255,255,0.7); padding: 10px; border-radius: 5px; z-index: 20; }
