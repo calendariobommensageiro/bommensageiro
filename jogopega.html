@@ -6,9 +6,9 @@
     <style>
         body { margin: 0; overflow: hidden; background: #000; font-family: sans-serif; }
         #game-container { position: relative; width: 100vw; height: 100vh; background: url('cenariopega.jpg') no-repeat center bottom; background-size: cover; }
-        #jogador { position: absolute; bottom: 20px; left: 50%; width: 100px; }
+        #jogador { position: absolute; bottom: 20px; left: 50%; width: 100px; transition: left 0.1s; }
         .item { position: absolute; width: 50px; }
-        #placar { position: absolute; top: 10px; left: 10px; color: white; font-size: 24px; }
+        #placar { position: absolute; top: 10px; left: 10px; color: white; font-size: 24px; font-weight: bold; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -36,7 +36,7 @@
         const item = document.createElement('img');
         item.src = 'pergaminhopega.png';
         item.className = 'item';
-        item.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+        item.style.left = Math.random() * (window.innerWidth - 60) + 'px';
         let itemTop = 0;
         item.style.top = itemTop + 'px';
         container.appendChild(item);
@@ -45,13 +45,15 @@
             itemTop += 5;
             item.style.top = itemTop + 'px';
 
-            // Detecção de colisão (se o item chegar na altura do jogador)
+            // Detecção de colisão
             const jogadorRect = jogador.getBoundingClientRect();
             const itemRect = item.getBoundingClientRect();
 
             if (itemRect.bottom >= jogadorRect.top && 
                 itemRect.left < jogadorRect.right && 
-                itemRect.right > jogadorRect.left) {
+                itemRect.right > jogadorRect.left &&
+                itemRect.top < jogadorRect.bottom) {
+                
                 pontos++;
                 placarEl.innerText = 'Pontos: ' + pontos;
                 item.remove();
