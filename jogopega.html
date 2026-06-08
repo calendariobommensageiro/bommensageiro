@@ -4,64 +4,66 @@
     <meta charset="UTF-8">
     <title>Jogo Pega</title>
     <style>
-        body { margin: 0; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; }
-        #game-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background: url('cenariobeta.jpg') no-repeat center bottom;
-            background-size: cover;
-        }
-        #jogador {
-            position: absolute;
-            bottom: 10%;
-            left: 50%;
-            width: 120px;
-            transform: translateX(-50%);
-            z-index: 10;
-        }
-        .item {
-            position: absolute;
-            width: 60px;
-            top: -100px;
-            z-index: 5;
-        }
+        body { margin: 0; overflow: hidden; background: #000; font-family: sans-serif; }
+        #game-container { position: relative; width: 100vw; height: 100vh; background: url('cenariobeta.jpg') no-repeat center bottom; background-size: cover; }
+        #jogador { position: absolute; bottom: 20px; left: 50%; width: 100px; }
+        .item { position: absolute; width: 50px; }
+        #placar { position: absolute; top: 10px; left: 10px; color: white; font-size: 24px; }
     </style>
 </head>
 <body>
 
+<div id="placar">Pontos: 0</div>
 <div id="game-container">
     <img id="jogador" src="jogadorpega.png" alt="Jogador">
 </div>
 
 <script>
-    const container = document.getElementById('game-container');
     const jogador = document.getElementById('jogador');
-    
-    window.addEventListener('mousemove', (e) => {
-        let pos = (e.clientX / window.innerWidth) * 100;
-        jogador.style.left = pos + '%';
+    const container = document.getElementById('game-container');
+    const placarEl = document.getElementById('placar');
+    let posX = window.innerWidth / 2;
+    let pontos = 0;
+
+    // Movimentação por setas
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' && posX > 50) posX -= 40;
+        if (e.key === 'ArrowRight' && posX < window.innerWidth - 50) posX += 40;
+        jogador.style.left = (posX - 50) + 'px';
     });
 
     function criarItem() {
-        const p = document.createElement('img');
-        p.src = 'pergaminhopega.png';
-        p.className = 'item';
-        p.style.left = Math.random() * 90 + '%';
-        container.appendChild(p);
+        const item = document.createElement('img');
+        item.src = 'pergaminhopega.png';
+        item.className = 'item';
+        item.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+        let itemTop = 0;
+        item.style.top = itemTop + 'px';
+        container.appendChild(item);
 
-        let top = -100;
         const cair = setInterval(() => {
-            top += 5;
-            p.style.top = top + 'px';
-            if (top > window.innerHeight) {
+            itemTop += 5;
+            item.style.top = itemTop + 'px';
+
+            // Detecção de colisão (se o item chegar na altura do jogador)
+            const jogadorRect = jogador.getBoundingClientRect();
+            const itemRect = item.getBoundingClientRect();
+
+            if (itemRect.bottom >= jogadorRect.top && 
+                itemRect.left < jogadorRect.right && 
+                itemRect.right > jogadorRect.left) {
+                pontos++;
+                placarEl.innerText = 'Pontos: ' + pontos;
+                item.remove();
                 clearInterval(cair);
-                p.remove();
+            } else if (itemTop > window.innerHeight) {
+                item.remove();
+                clearInterval(cair);
             }
         }, 20);
     }
 
-    setInterval(criarItem, 2000);
+    setInterval(criarItem, 1500);
 </script>
 </body>
 </html>
