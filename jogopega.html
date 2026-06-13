@@ -58,7 +58,7 @@
 
     function gameLoop() {
         if (keys['ArrowLeft'] && posX > 0) posX -= 15;
-        if (keys['ArrowRight'] && posX < window.innerWidth - 150) posX += 15;
+        if (keys['ArrowRight'] && posX < window.innerWidth - 250) posX += 15;
         jogador.style.left = posX + 'px';
         requestAnimationFrame(gameLoop);
     }
