@@ -5,86 +5,116 @@
     <title>Jogo Pega</title>
     <style>
         body { margin: 0; padding: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
-        #game-container { 
-            position: relative; 
-            width: 100vw; 
-            height: 100vh; 
-            background: url('cenariopega.png') no-repeat center bottom; 
-            background-size: cover; 
+        #game-container { position: relative; width: 100vw; height: 100vh; background: url('cenariopega.png') no-repeat center bottom; background-size: cover; }
+        
+        /* Estilo unificado para Placar e Botão */
+        .ui-element { 
+            position: absolute; color: white; font-size: 32px; font-weight: bold; 
+            background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; z-index: 10;
         }
-        #jogador { 
-            position: absolute; 
-            bottom: 20px; 
-            left: 50%; 
-            width: 250px; 
-            transition: left 0.05s linear;
-            pointer-events: none; /* Garante que o toque passe direto pelo boneco */
-        }
-        .item { 
-            position: absolute; 
-            width: 100px; 
-            z-index: 5;
-        }
-        #placar { 
-            position: absolute; 
-            top: 20px; 
-            left: 20px; 
-            color: white; 
-            font-size: 32px; 
-            font-weight: bold; 
-            background: rgba(0,0,0,0.6); 
-            padding: 15px; 
-            border-radius: 10px; 
-            z-index: 10;
-        }
+        #placar { top: 20px; left: 20px; }
+        #btnPause { top: 20px; right: 20px; cursor: pointer; border: none; }
+
+        #jogador { position: absolute; bottom: 20px; left: 50%; width: 250px; pointer-events: none; }
+        .item { position: absolute; width: 100px; z-index: 5; }
+        #mensagem { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-size: 50px; z-index: 20; text-align: center; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div id="placar">Pontos: 0</div>
-<div id="game-container">
-    <img id="jogador" src="jogadorpega.png" alt="Jogador">
-</div>
-
-<button id="btnPause" style="position:fixed; top:10px; right:10px; z-index:100; padding:10px;">Pause / Play</button>
+<div id="placar" class="ui-element">Pontos: 0 | Erros: 0/5</div>
+<button id="btnPause" class="ui-element">PAUSE</button>
+<div id="mensagem">Toque para Começar!</div>
+<div id="game-container"><img id="jogador" src="jogadorpega.png"></div>
 
 <script>
-    // Variáveis de controle
-    let estadoDoJogo = 'contagem'; // contagem, jogando, pausado, gameover
-    let erros = 0;
-    let recorde = localStorage.getItem('recordeJogo') || 0;
-
-    // Função de Pause
+    const jogador = document.getElementById('jogador');
+    const container = document.getElementById('game-container');
+    const placarEl = document.getElementById('placar');
+    const msgEl = document.getElementById('mensagem');
     const btnPause = document.getElementById('btnPause');
+    
+    let posX = window.innerWidth / 2;
+    let pontos = 0, erros = 0, estado = 'contagem'; 
+    let keys = { ArrowLeft: false, ArrowRight: false };
+
+    // Lógica do Loop Principal
+    function gameLoop() {
+        if (estado === 'jogando') {
+            if (keys['ArrowLeft'] && posX > 0) posX -= 15;
+            if (keys['ArrowRight'] && posX < (window.innerWidth - 250)) posX += 15;
+            jogador.style.left = posX + 'px';
+        }
+        requestAnimationFrame(gameLoop);
+    }
+    gameLoop();
+
+    // Botão Pause
     btnPause.addEventListener('click', () => {
-        if (estadoDoJogo === 'jogando') estadoDoJogo = 'pausado';
-        else if (estadoDoJogo === 'pausado') estadoDoJogo = 'jogando';
+        if (estado === 'jogando') { estado = 'pausado'; btnPause.innerText = 'PLAY'; }
+        else if (estado === 'pausado') { estado = 'jogando'; btnPause.innerText = 'PAUSE'; }
     });
 
-    // Função que verifica o Game Over
-    function verificarErro() {
-        erros++;
-        if (erros >= 5) {
-            finalizarJogo();
-        }
+    // Início com 3, 2, 1
+    function iniciarJogo() {
+        if(estado !== 'contagem') return;
+        let count = 3;
+        msgEl.innerText = count;
+        const c = setInterval(() => {
+            count--;
+            if(count > 0) msgEl.innerText = count;
+            else if(count === 0) msgEl.innerText = "GO!";
+            else { msgEl.style.display = 'none'; estado = 'jogando'; clearInterval(c); setInterval(criarItem, 1500); }
+        }, 1000);
+    }
+    msgEl.onclick = iniciarJogo;
+
+    function criarItem() {
+        if (estado !== 'jogando') return; // Se pausado, não cria item
+        
+        const item = document.createElement('img');
+        item.src = 'pergaminhopega.png';
+        item.className = 'item';
+        item.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+        let top = 0;
+        container.appendChild(item);
+
+        const cair = setInterval(() => {
+            if (estado === 'pausado') return; // Pausa a queda
+
+            top += 8;
+            item.style.top = top + 'px';
+            const j = jogador.getBoundingClientRect(), i = item.getBoundingClientRect();
+            
+            if(i.bottom >= j.top && i.left < j.right-20 && i.right > j.left+20) {
+                pontos++;
+                item.remove(); clearInterval(cair);
+                placarEl.innerText = `Pontos: ${pontos} | Erros: ${erros}/5`;
+            } else if(top > window.innerHeight) {
+                erros++;
+                item.remove(); clearInterval(cair);
+                placarEl.innerText = `Pontos: ${pontos} | Erros: ${erros}/5`;
+                if(erros >= 5) gameOver();
+            }
+        }, 20);
     }
 
-    // Função de Finalização e Ranking
-    function finalizarJogo() {
-        estadoDoJogo = 'gameover';
-        if (pontos > recorde) {
-            recorde = pontos;
-            localStorage.setItem('recordeJogo', recorde);
-        }
-        alert("GAME OVER! Sua pontuação: " + pontos + ". Recorde atual: " + recorde);
-        location.reload(); // Reinicia
+    function gameOver() {
+        estado = 'gameover';
+        let recorde = localStorage.getItem('recordeJogo') || 0;
+        if (pontos > recorde) localStorage.setItem('recordeJogo', pontos);
+        msgEl.style.display = 'flex';
+        msgEl.innerText = `GAME OVER!\nPontos: ${pontos}\nRecorde: ${Math.max(pontos, recorde)}\nToque para Recomeçar`;
+        msgEl.onclick = () => location.reload();
     }
 
-    // No seu loop de queda (dentro do setInterval de criação):
-    // Se (itemTop > window.innerHeight) { 
-    //    item.remove(); 
-    //    verificarErro(); 
-    // }
+    // Controles (Teclado e Toque)
+    window.addEventListener('keydown', (e) => { if(e.key==='ArrowLeft') keys.ArrowLeft=true; if(e.key==='ArrowRight') keys.ArrowRight=true; });
+    window.addEventListener('keyup', (e) => { if(e.key==='ArrowLeft') keys.ArrowLeft=false; if(e.key==='ArrowRight') keys.ArrowRight=false; });
+    window.addEventListener('touchstart', (e) => { 
+        if(estado === 'jogando') { const mid = window.innerWidth/2; keys.ArrowLeft = (e.touches[0].clientX < mid); keys.ArrowRight = (e.touches[0].clientX >= mid); }
+    });
+    window.addEventListener('touchend', () => { keys.ArrowLeft = false; keys.ArrowRight = false; });
 </script>
 </body>
 </html>
