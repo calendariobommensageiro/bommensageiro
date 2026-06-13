@@ -3,49 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Jogo Pega</title>
-  <style>
-        body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
-        #game-container { 
-            position: relative; 
-            width: 100vw; 
-            height: 100vh; 
-            background: url('cenariopega.png') no-repeat center bottom; 
-            background-size: cover; 
-        }
-        /* Ajuste do Personagem */
-        #jogador { 
-            position: absolute; 
-            bottom: 30px; 
-            left: 50%; 
-            width: 120px; /* Definindo um tamanho fixo visível */
-            transition: left 0.1s; 
-        }
-        /* Ajuste do Pergaminho */
-        .item { 
-            position: absolute; 
-            width: 60px; /* Tamanho fixo menor para não cobrir a tela */
-            z-index: 5;
-        }
-        #placar { 
-            position: absolute; 
-            top: 10px; 
-            left: 10px; 
-            color: white; 
-            font-size: 24px; 
-            font-weight: bold; 
-            background: rgba(0,0,0,0.5); 
-            padding: 10px; 
-            border-radius: 5px; 
-            z-index: 20; 
-        }
-    </style>
-</head>
-<body>
-
-<div id="placar">Pontos: 0</div>
-<div id="game-container">
-    <img id="jogador" src="jogadorpega.png" alt="Jogador">
-</div>
+ <style>
+    body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
+    #game-container { position: relative; width: 100vw; height: 100vh; background: url('cenariopega.png') no-repeat center bottom; background-size: cover; }
+    
+    #jogador { 
+        position: absolute; 
+        bottom: 20px; 
+        left: 50%; 
+        width: 150px; /* Personagem maior */
+        transition: left 0.05s linear; 
+    }
+    
+    .item { 
+        position: absolute; 
+        width: 100px; /* Pergaminho maior para facilitar a colisão */
+        z-index: 5;
+    }
+    
+    #placar { position: absolute; top: 20px; left: 20px; color: white; font-size: 32px; font-weight: bold; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; }
+</style>
 
 <script>
     const jogador = document.getElementById('jogador');
@@ -53,35 +30,40 @@
     const placarEl = document.getElementById('placar');
     let posX = window.innerWidth / 2;
     let pontos = 0;
+    
+    // Movimentação mais fluida: permite segurar a seta
+    let keys = {};
+    window.addEventListener('keydown', (e) => keys[e.key] = true);
+    window.addEventListener('keyup', (e) => keys[e.key] = false);
 
-    // Movimentação por setas
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft' && posX > 50) posX -= 40;
-        if (e.key === 'ArrowRight' && posX < window.innerWidth - 50) posX += 40;
-        jogador.style.left = (posX - 50) + 'px';
-    });
+    function gameLoop() {
+        if (keys['ArrowLeft'] && posX > 0) posX -= 15; // Velocidade ajustada
+        if (keys['ArrowRight'] && posX < window.innerWidth - 150) posX += 15;
+        jogador.style.left = posX + 'px';
+        requestAnimationFrame(gameLoop);
+    }
+    gameLoop();
 
     function criarItem() {
         const item = document.createElement('img');
-        item.src = 'pergaminhopega.png';
+        item.src = 'pergaminhopega.png'; // Verifique se este é o nome real do arquivo
         item.className = 'item';
-        item.style.left = Math.random() * (window.innerWidth - 60) + 'px';
+        item.style.left = Math.random() * (window.innerWidth - 100) + 'px';
         let itemTop = 0;
         item.style.top = itemTop + 'px';
         container.appendChild(item);
 
         const cair = setInterval(() => {
-            itemTop += 5;
+            itemTop += 6; // Velocidade de queda controlada
             item.style.top = itemTop + 'px';
 
-            // Detecção de colisão
             const jogadorRect = jogador.getBoundingClientRect();
             const itemRect = item.getBoundingClientRect();
 
+            // Colisão facilitada
             if (itemRect.bottom >= jogadorRect.top && 
-                itemRect.left < jogadorRect.right && 
-                itemRect.right > jogadorRect.left &&
-                itemRect.top < jogadorRect.bottom) {
+                itemRect.left < jogadorRect.right - 20 && 
+                itemRect.right > jogadorRect.left + 20) {
                 
                 pontos++;
                 placarEl.innerText = 'Pontos: ' + pontos;
@@ -93,8 +75,7 @@
             }
         }, 20);
     }
-
-    setInterval(criarItem, 1500);
+    setInterval(criarItem, 2000); // Pergaminhos caem um pouco mais devagar
 </script>
 </body>
 </html>
