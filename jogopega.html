@@ -46,88 +46,45 @@
     <img id="jogador" src="jogadorpega.png" alt="Jogador">
 </div>
 
+<button id="btnPause" style="position:fixed; top:10px; right:10px; z-index:100; padding:10px;">Pause / Play</button>
+
 <script>
-    const jogador = document.getElementById('jogador');
-    const container = document.getElementById('game-container');
-    const placarEl = document.getElementById('placar');
-    
-    let posX = window.innerWidth / 2;
-    let pontos = 0;
-    let keys = { ArrowLeft: false, ArrowRight: false };
+    // Variáveis de controle
+    let estadoDoJogo = 'contagem'; // contagem, jogando, pausado, gameover
+    let erros = 0;
+    let recorde = localStorage.getItem('recordeJogo') || 0;
 
-    // --- LÓGICA DE MOVIMENTO ---
-    function gameLoop() {
-        if (keys['ArrowLeft'] && posX > 0) {
-            posX -= 15;
+    // Função de Pause
+    const btnPause = document.getElementById('btnPause');
+    btnPause.addEventListener('click', () => {
+        if (estadoDoJogo === 'jogando') estadoDoJogo = 'pausado';
+        else if (estadoDoJogo === 'pausado') estadoDoJogo = 'jogando';
+    });
+
+    // Função que verifica o Game Over
+    function verificarErro() {
+        erros++;
+        if (erros >= 5) {
+            finalizarJogo();
         }
-        // O limite 250 garante que o jogador de 250px pare na borda direita
-        if (keys['ArrowRight'] && posX < (window.innerWidth - 250)) {
-            posX += 15;
-        }
-        jogador.style.left = posX + 'px';
-        requestAnimationFrame(gameLoop);
     }
-    gameLoop();
 
-    // --- CONTROLE TECLADO ---
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') keys['ArrowLeft'] = true;
-        if (e.key === 'ArrowRight') keys['ArrowRight'] = true;
-    });
-    window.addEventListener('keyup', (e) => {
-        if (e.key === 'ArrowLeft') keys['ArrowLeft'] = false;
-        if (e.key === 'ArrowRight') keys['ArrowRight'] = false;
-    });
-
-    // --- CONTROLE TOQUE (CELULAR) ---
-    window.addEventListener('touchstart', (e) => {
-        const metadeTela = window.innerWidth / 2;
-        if (e.touches[0].clientX < metadeTela) {
-            keys['ArrowLeft'] = true;
-            keys['ArrowRight'] = false;
-        } else {
-            keys['ArrowRight'] = true;
-            keys['ArrowLeft'] = false;
+    // Função de Finalização e Ranking
+    function finalizarJogo() {
+        estadoDoJogo = 'gameover';
+        if (pontos > recorde) {
+            recorde = pontos;
+            localStorage.setItem('recordeJogo', recorde);
         }
-    });
-    window.addEventListener('touchend', () => {
-        keys['ArrowLeft'] = false;
-        keys['ArrowRight'] = false;
-    });
-
-    // --- LÓGICA DO PERGAMINHO ---
-    function criarItem() {
-        const item = document.createElement('img');
-        item.src = 'pergaminhopega.png';
-        item.className = 'item';
-        item.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-        let itemTop = 0;
-        item.style.top = itemTop + 'px';
-        container.appendChild(item);
-
-        const cair = setInterval(() => {
-            itemTop += 6;
-            item.style.top = itemTop + 'px';
-
-            const jogadorRect = jogador.getBoundingClientRect();
-            const itemRect = item.getBoundingClientRect();
-
-            // Colisão
-            if (itemRect.bottom >= jogadorRect.top && 
-                itemRect.left < jogadorRect.right - 20 && 
-                itemRect.right > jogadorRect.left + 20) {
-                
-                pontos++;
-                placarEl.innerText = 'Pontos: ' + pontos;
-                item.remove();
-                clearInterval(cair);
-            } else if (itemTop > window.innerHeight) {
-                item.remove();
-                clearInterval(cair);
-            }
-        }, 20);
+        alert("GAME OVER! Sua pontuação: " + pontos + ". Recorde atual: " + recorde);
+        location.reload(); // Reinicia
     }
-    setInterval(criarItem, 2000);
+
+    // No seu loop de queda (dentro do setInterval de criação):
+    // Se (itemTop > window.innerHeight) { 
+    //    item.remove(); 
+    //    verificarErro(); 
+    // }
 </script>
 </body>
 </html>
