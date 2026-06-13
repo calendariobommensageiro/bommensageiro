@@ -78,16 +78,21 @@
         if (e.key === 'ArrowRight') mover('right', false);
     });
 
-    // Eventos de Toque (Celular)
+  // Eventos de Toque (Celular) - Modo Robusto
     window.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Impede que o navegador tente rolar a página
         const metadeTela = window.innerWidth / 2;
-        if (e.touches[0].clientX < metadeTela) mover('left', true);
+        const toqueX = e.touches[0].clientX;
+        
+        if (toqueX < metadeTela) mover('left', true);
         else mover('right', true);
-    });
-    window.addEventListener('touchend', () => {
+    }, {passive: false});
+
+    window.addEventListener('touchend', (e) => {
+        e.preventDefault();
         mover('left', false);
         mover('right', false);
-    });
+    }, {passive: false});
 
     // --- LÓGICA DE CRIAÇÃO DE ITENS ---
     function criarItem() {
