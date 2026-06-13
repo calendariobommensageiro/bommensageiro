@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Jogo Pega</title>
     <style>
-        body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
+        body { margin: 0; padding: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
         #game-container { 
             position: relative; 
             width: 100vw; 
@@ -17,7 +17,8 @@
             bottom: 20px; 
             left: 50%; 
             width: 250px; 
-            transition: left 0.05s linear; 
+            transition: left 0.05s linear;
+            pointer-events: none; /* Garante que o toque passe direto pelo boneco */
         }
         .item { 
             position: absolute; 
@@ -49,52 +50,52 @@
     const jogador = document.getElementById('jogador');
     const container = document.getElementById('game-container');
     const placarEl = document.getElementById('placar');
+    
     let posX = window.innerWidth / 2;
     let pontos = 0;
-    
-    let keys = {};
-    window.addEventListener('keydown', (e) => keys[e.key] = true);
-    window.addEventListener('keyup', (e) => keys[e.key] = false);
+    let keys = { ArrowLeft: false, ArrowRight: false };
 
+    // --- LÓGICA DE MOVIMENTO ---
     function gameLoop() {
-        if (keys['ArrowLeft'] && posX > 0) posX -= 15;
-        if (keys['ArrowRight'] && posX < window.innerWidth - 250) posX += 15;
+        if (keys['ArrowLeft'] && posX > 0) {
+            posX -= 15;
+        }
+        // O limite 250 garante que o jogador de 250px pare na borda direita
+        if (keys['ArrowRight'] && posX < (window.innerWidth - 250)) {
+            posX += 15;
+        }
         jogador.style.left = posX + 'px';
         requestAnimationFrame(gameLoop);
     }
-  // --- SUPORTE A TECLADO E TOQUE ---
-    function mover(direcao, status) {
-        if (direcao === 'left') keys['ArrowLeft'] = status;
-        if (direcao === 'right') keys['ArrowRight'] = status;
-    }
+    gameLoop();
 
-    // Eventos de Teclado
+    // --- CONTROLE TECLADO ---
     window.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') mover('left', true);
-        if (e.key === 'ArrowRight') mover('right', true);
+        if (e.key === 'ArrowLeft') keys['ArrowLeft'] = true;
+        if (e.key === 'ArrowRight') keys['ArrowRight'] = true;
     });
     window.addEventListener('keyup', (e) => {
-        if (e.key === 'ArrowLeft') mover('left', false);
-        if (e.key === 'ArrowRight') mover('right', false);
+        if (e.key === 'ArrowLeft') keys['ArrowLeft'] = false;
+        if (e.key === 'ArrowRight') keys['ArrowRight'] = false;
     });
 
-  // Eventos de Toque (Celular) - Modo Robusto
+    // --- CONTROLE TOQUE (CELULAR) ---
     window.addEventListener('touchstart', (e) => {
-        e.preventDefault(); // Impede que o navegador tente rolar a página
         const metadeTela = window.innerWidth / 2;
-        const toqueX = e.touches[0].clientX;
-        
-        if (toqueX < metadeTela) mover('left', true);
-        else mover('right', true);
-    }, {passive: false});
+        if (e.touches[0].clientX < metadeTela) {
+            keys['ArrowLeft'] = true;
+            keys['ArrowRight'] = false;
+        } else {
+            keys['ArrowRight'] = true;
+            keys['ArrowLeft'] = false;
+        }
+    });
+    window.addEventListener('touchend', () => {
+        keys['ArrowLeft'] = false;
+        keys['ArrowRight'] = false;
+    });
 
-    window.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        mover('left', false);
-        mover('right', false);
-    }, {passive: false});
-
-    // --- LÓGICA DE CRIAÇÃO DE ITENS ---
+    // --- LÓGICA DO PERGAMINHO ---
     function criarItem() {
         const item = document.createElement('img');
         item.src = 'pergaminhopega.png';
@@ -111,6 +112,7 @@
             const jogadorRect = jogador.getBoundingClientRect();
             const itemRect = item.getBoundingClientRect();
 
+            // Colisão
             if (itemRect.bottom >= jogadorRect.top && 
                 itemRect.left < jogadorRect.right - 20 && 
                 itemRect.right > jogadorRect.left + 20) {
@@ -126,3 +128,6 @@
         }, 20);
     }
     setInterval(criarItem, 2000);
+</script>
+</body>
+</html>
