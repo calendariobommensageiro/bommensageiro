@@ -3,32 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Jogo Pega</title>
-   <style>
-        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+  <style>
+        body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
         #game-container { 
             position: relative; 
             width: 100vw; 
             height: 100vh; 
-            /* Corrigido para .png */
-            background: #ccc url('cenariopega.png') no-repeat center bottom; 
+            background: url('cenariopega.png') no-repeat center bottom; 
             background-size: cover; 
         }
-      #jogador { 
-    position: absolute; 
-    bottom: 5%; /* Ajustado para ficar proporcional ao fundo */
-    left: 50%; 
-    width: 280px; /* Aumentado para 280px */
-    transition: left 0.1s; 
-    z-index: 10;
-}
-}
-..item { 
-        position: absolute; 
-        width: 100px; /* Reduzi de 800px ou mais para 100px */
-        top: -100px; 
-        z-index: 5;
-    }
-    }        #placar { position: absolute; top: 10px; left: 10px; color: black; font-size: 24px; font-weight: bold; background: rgba(255,255,255,0.7); padding: 10px; border-radius: 5px; z-index: 20; }
+        /* Ajuste do Personagem */
+        #jogador { 
+            position: absolute; 
+            bottom: 30px; 
+            left: 50%; 
+            width: 120px; /* Definindo um tamanho fixo visível */
+            transition: left 0.1s; 
+        }
+        /* Ajuste do Pergaminho */
+        .item { 
+            position: absolute; 
+            width: 60px; /* Tamanho fixo menor para não cobrir a tela */
+            z-index: 5;
+        }
+        #placar { 
+            position: absolute; 
+            top: 10px; 
+            left: 10px; 
+            color: white; 
+            font-size: 24px; 
+            font-weight: bold; 
+            background: rgba(0,0,0,0.5); 
+            padding: 10px; 
+            border-radius: 5px; 
+            z-index: 20; 
+        }
     </style>
 </head>
 <body>
