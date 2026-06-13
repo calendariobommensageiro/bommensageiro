@@ -62,8 +62,34 @@
         jogador.style.left = posX + 'px';
         requestAnimationFrame(gameLoop);
     }
-    gameLoop();
+  // --- SUPORTE A TECLADO E TOQUE ---
+    function mover(direcao, status) {
+        if (direcao === 'left') keys['ArrowLeft'] = status;
+        if (direcao === 'right') keys['ArrowRight'] = status;
+    }
 
+    // Eventos de Teclado
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') mover('left', true);
+        if (e.key === 'ArrowRight') mover('right', true);
+    });
+    window.addEventListener('keyup', (e) => {
+        if (e.key === 'ArrowLeft') mover('left', false);
+        if (e.key === 'ArrowRight') mover('right', false);
+    });
+
+    // Eventos de Toque (Celular)
+    window.addEventListener('touchstart', (e) => {
+        const metadeTela = window.innerWidth / 2;
+        if (e.touches[0].clientX < metadeTela) mover('left', true);
+        else mover('right', true);
+    });
+    window.addEventListener('touchend', () => {
+        mover('left', false);
+        mover('right', false);
+    });
+
+    // --- LÓGICA DE CRIAÇÃO DE ITENS ---
     function criarItem() {
         const item = document.createElement('img');
         item.src = 'pergaminhopega.png';
@@ -95,6 +121,3 @@
         }, 20);
     }
     setInterval(criarItem, 2000);
-</script>
-</body>
-</html>
