@@ -3,26 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Jogo Pega</title>
- <style>
-    body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
-    #game-container { position: relative; width: 100vw; height: 100vh; background: url('cenariopega.png') no-repeat center bottom; background-size: cover; }
-    
-    #jogador { 
-        position: absolute; 
-        bottom: 20px; 
-        left: 50%; 
-        width: 150px; /* Personagem maior */
-        transition: left 0.05s linear; 
-    }
-    
-    .item { 
-        position: absolute; 
-        width: 100px; /* Pergaminho maior para facilitar a colisão */
-        z-index: 5;
-    }
-    
-    #placar { position: absolute; top: 20px; left: 20px; color: white; font-size: 32px; font-weight: bold; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; }
-</style>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
+        #game-container { 
+            position: relative; 
+            width: 100vw; 
+            height: 100vh; 
+            background: url('cenariopega.png') no-repeat center bottom; 
+            background-size: cover; 
+        }
+        #jogador { 
+            position: absolute; 
+            bottom: 20px; 
+            left: 50%; 
+            width: 150px; 
+            transition: left 0.05s linear; 
+        }
+        .item { 
+            position: absolute; 
+            width: 100px; 
+            z-index: 5;
+        }
+        #placar { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            color: white; 
+            font-size: 32px; 
+            font-weight: bold; 
+            background: rgba(0,0,0,0.6); 
+            padding: 15px; 
+            border-radius: 10px; 
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+<div id="placar">Pontos: 0</div>
+<div id="game-container">
+    <img id="jogador" src="jogadorpega.png" alt="Jogador">
+</div>
 
 <script>
     const jogador = document.getElementById('jogador');
@@ -31,13 +52,12 @@
     let posX = window.innerWidth / 2;
     let pontos = 0;
     
-    // Movimentação mais fluida: permite segurar a seta
     let keys = {};
     window.addEventListener('keydown', (e) => keys[e.key] = true);
     window.addEventListener('keyup', (e) => keys[e.key] = false);
 
     function gameLoop() {
-        if (keys['ArrowLeft'] && posX > 0) posX -= 15; // Velocidade ajustada
+        if (keys['ArrowLeft'] && posX > 0) posX -= 15;
         if (keys['ArrowRight'] && posX < window.innerWidth - 150) posX += 15;
         jogador.style.left = posX + 'px';
         requestAnimationFrame(gameLoop);
@@ -46,7 +66,7 @@
 
     function criarItem() {
         const item = document.createElement('img');
-        item.src = 'pergaminhopega.png'; // Verifique se este é o nome real do arquivo
+        item.src = 'pergaminhopega.png';
         item.className = 'item';
         item.style.left = Math.random() * (window.innerWidth - 100) + 'px';
         let itemTop = 0;
@@ -54,13 +74,12 @@
         container.appendChild(item);
 
         const cair = setInterval(() => {
-            itemTop += 6; // Velocidade de queda controlada
+            itemTop += 6;
             item.style.top = itemTop + 'px';
 
             const jogadorRect = jogador.getBoundingClientRect();
             const itemRect = item.getBoundingClientRect();
 
-            // Colisão facilitada
             if (itemRect.bottom >= jogadorRect.top && 
                 itemRect.left < jogadorRect.right - 20 && 
                 itemRect.right > jogadorRect.left + 20) {
@@ -75,7 +94,7 @@
             }
         }, 20);
     }
-    setInterval(criarItem, 2000); // Pergaminhos caem um pouco mais devagar
+    setInterval(criarItem, 2000);
 </script>
 </body>
 </html>
